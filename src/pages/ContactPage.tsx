@@ -26,7 +26,15 @@ const ContactPage: React.FC = () => {
           <label htmlFor="email">メールアドレス</label>
           <input type="email" id="email" name="email" required />
         </div>
-        
+
+        <div className="form-group">
+          <label htmlFor="recipient">お問い合わせ先</label>
+          <select id="recipient" name="recipient">
+            <option value="office">事業所</option>
+            <option value="individual">個人</option>
+          </select>
+        </div>
+
         {/* 機能追加: お問い合わせ件名フォーム */}
         <div className="form-group">
           <label htmlFor="subject">お問い合わせ件名</label>

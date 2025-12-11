@@ -31,6 +31,7 @@ export interface Work {
 
   // 制作情報
   createdDate?: string; // 制作日
+  uploadedDate?: string; // アップロード日
   tools?: string[]; // 使用ツール
   duration?: string; // 制作期間
   awards?: string[]; // 受賞歴

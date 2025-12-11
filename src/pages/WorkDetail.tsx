@@ -30,7 +30,8 @@ const WorkDetail: React.FC = () => {
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (commentText.trim()) {
-      addComment(work.id, commentText);
+      // addComment(work.id, commentText); // リアルタイム反映を無効化
+      alert('コメントを送信しました');
       setCommentText('');
     }
   };
@@ -155,6 +156,11 @@ const WorkDetail: React.FC = () => {
                   <strong><i className="fas fa-calendar"></i> 制作日:</strong> {work.createdDate}
                 </div>
               )}
+              {work.uploadedDate && (
+                <div className="info-item">
+                  <strong><i className="fas fa-cloud-upload-alt"></i> アップロード日:</strong> {work.uploadedDate}
+                </div>
+              )}
               {work.tools && work.tools.length > 0 && (
                 <div className="info-item">
                   <strong><i className="fas fa-tools"></i> 使用ツール:</strong> {work.tools.join(', ')}
@@ -189,7 +195,7 @@ const WorkDetail: React.FC = () => {
               disabled={!isLoggedIn}
             ></textarea>
             <button type="submit" disabled={!isLoggedIn || !commentText.trim()}>
-              コメントを投稿
+              コメントを送る
             </button>
           </form>
           <ul className="comment-list">

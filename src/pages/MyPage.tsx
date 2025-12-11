@@ -3,19 +3,25 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useData } from '../contexts/DataContext';
 import WorkGrid from '../components/WorkGrid';
-import { SnsLinks } from '../types';//'type'
+import { SnsLinks, Creator } from '../types';//'type'
 
-type MyPageTab = 'uploaded' | 'liked' | 'following' | 'followers' | 'profile-edit';
+type MyPageTab = 'uploaded' | 'liked' | 'following' | 'followers' | 'profile-edit' | 'account-management';
 
 const MyPage: React.FC = () => {
   const { profile, updateProfile, isLoggedIn } = useAuth();
   const { works, users } = useData();
-  const [activeTab, setActiveTab] = useState<MyPageTab>('uploaded'); //
+  const [activeTab, setActiveTab] = useState<MyPageTab>('uploaded');
 
   // プロフィール編集フォーム用のローカルステート
   const [name, setName] = useState(profile.name);
   const [bio, setBio] = useState(profile.bio);
   const [sns, setSns] = useState<SnsLinks>(profile.sns);
+
+  // アカウント管理用のローカルステート
+  const [email, setEmail] = useState('user@example.com'); // ダミー初期値
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   // AuthContextのprofileが変更されたらフォームに反映
   useEffect(() => {
@@ -23,7 +29,7 @@ const MyPage: React.FC = () => {
     setBio(profile.bio);
     setSns(profile.sns);
   }, [profile]);
-  
+
   // script.js updateMyProfile
   const handleProfileSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +39,23 @@ const MyPage: React.FC = () => {
   const handleSnsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSns(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert(`メールアドレスを ${email} に変更しました。（ダミー処理）`);
+  };
+
+  const handlePasswordSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      alert('新しいパスワードが一致しません。');
+      return;
+    }
+    alert('パスワードを変更しました。（ダミー処理）');
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
   };
 
   // script.js renderMyPage
@@ -55,17 +78,17 @@ const MyPage: React.FC = () => {
           <form id="profile-edit-form" onSubmit={handleProfileSubmit}>
             <div className="form-group">
               <label htmlFor="user-name">ユーザー名</label>
-              <input 
-                type="text" 
-                id="user-name" 
+              <input
+                type="text"
+                id="user-name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="form-group">
               <label htmlFor="bio">自己紹介</label>
-              <textarea 
-                id="bio" 
+              <textarea
+                id="bio"
                 rows={4}
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
@@ -93,35 +116,91 @@ const MyPage: React.FC = () => {
             <button type="submit">プロフィールを更新</button>
           </form>
         );
+      case 'account-management':
+        return (
+          <div className="account-management">
+            <h3>メールアドレス変更</h3>
+            <form onSubmit={handleEmailSubmit} className="account-form">
+              <div className="form-group">
+                <label htmlFor="email">メールアドレス</label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit">メールアドレスを変更</button>
+            </form>
+
+            <hr className="divider" />
+
+            <h3>パスワード変更</h3>
+            <form onSubmit={handlePasswordSubmit} className="account-form">
+              <div className="form-group">
+                <label htmlFor="current-password">現在のパスワード</label>
+                <input
+                  type="password"
+                  id="current-password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="new-password">新しいパスワード</label>
+                <input
+                  type="password"
+                  id="new-password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="confirm-password">新しいパスワード（確認）</label>
+                <input
+                  type="password"
+                  id="confirm-password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="submit">パスワードを変更</button>
+            </form>
+          </div>
+        );
       default:
         return null;
     }
-  }, [activeTab, works, users, name, bio, sns, updateProfile]);
-  
+  }, [activeTab, works, users, name, bio, sns, updateProfile, email, currentPassword, newPassword, confirmPassword]);
+
   // ログインしていない場合はマイページを表示しない（またはログインを促す）
   if (!isLoggedIn) {
-     return (
-        <section id="mypage" className="page-section active-page mypage-section">
-           <p>マイページを表示するにはログインが必要です。</p>
-        </section>
-     );
+    return (
+      <section id="mypage" className="page-section active-page mypage-section">
+        <p>マイページを表示するにはログインが必要です。</p>
+      </section>
+    );
   }
 
   return (
     <section id="mypage" className="page-section active-page mypage-section">
       <div className="mypage-header"> {/* */}
-        <img 
-          src={profile.profileIconUrl} 
-          alt="プロフィール画像" 
-          id="mypage-profile-icon" 
-          className="mypage-profile-icon" 
+        <img
+          src={profile.profileIconUrl}
+          alt="プロフィール画像"
+          id="mypage-profile-icon"
+          className="mypage-profile-icon"
         />
         <h2 id="mypage-title">{profile.name}のマイページ</h2>
       </div>
 
       <div className="mypage-tabs"> {/* */}
-        {(['uploaded', 'liked', 'following', 'followers', 'profile-edit'] as MyPageTab[]).map(tab => (
-          <button 
+        {(['uploaded', 'liked', 'following', 'followers', 'profile-edit', 'account-management'] as MyPageTab[]).map(tab => (
+          <button
             key={tab}
             className={`tab-button ${activeTab === tab ? 'active' : ''}`}
             data-tab={tab}
@@ -133,10 +212,11 @@ const MyPage: React.FC = () => {
             {tab === 'following' && 'フォロー'}
             {tab === 'followers' && 'フォロワー'}
             {tab === 'profile-edit' && 'プロフィール編集'}
+            {tab === 'account-management' && 'アカウント管理'}
           </button>
         ))}
       </div>
-      
+
       {/* script.jsのタブコンテンツ表示ロジック */}
       <div className="tab-content active" id={`${activeTab}-content`}>
         {renderedContent}

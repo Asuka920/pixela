@@ -1397,10 +1397,17 @@ img {
 /* Members Page Styles */
 .members-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
-    margin-top: 2rem;
 }
+
+@media (max-width: 768px) {
+    .members-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
 
 .member-card {
     background-color: #fff;
@@ -1426,6 +1433,8 @@ img {
     overflow: hidden;
     margin-bottom: 1rem;
     border: 3px solid #f0f2f5;
+    flex-shrink: 0;
+    aspect-ratio: 1;
 }
 
 .member-avatar img {
@@ -1447,6 +1456,9 @@ img {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    line-height: 1.5;
+    height: 4.5em;
+    /* 3 lines * 1.5 */
 }
 
 /* Global Nav Menu Drawer Style */
@@ -1488,4 +1500,977 @@ img {
 .nav-menu a:hover {
     background-color: rgba(255, 255, 255, 0.1);
     color: #fff;
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.page-item {
+    padding: 8px 16px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #555;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.page-item:hover:not(:disabled) {
+    background-color: #f0f2f5;
+    border-color: #9dbdba;
+    color: #9dbdba;
+}
+
+.page-item.active {
+    background-color: #9dbdba;
+    border-color: #9dbdba;
+    color: #fff;
+}
+
+.page-item:disabled {
+    background-color: #eee;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+/* Members Page Updates */
+.members-search {
+    margin-bottom: 2rem;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+}
+
+.member-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* リンクのデフォルトスタイルを上書き */
+    text-decoration: none;
+    color: inherit;
+}
+
+.member-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.member-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.skill-tag {
+    font-size: 0.75rem;
+    background-color: #e0f2f1;
+    color: #00695c;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.member-recent-works {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.member-recent-works h4 {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+}
+
+.recent-works-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.recent-work-item {
+    text-align: center;
+}
+
+.recent-work-item img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #eee;
+    margin-bottom: 3px;
+}
+
+.recent-work-title {
+    display: block;
+    font-size: 0.7rem;
+    color: #666;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Help Page FAQ */
+.faq-section {
+    margin-top: 3rem;
+    text-align: left;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.faq-section h3 {
+    border-bottom: 2px solid #9dbdba;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    color: #444;
+}
+
+.faq-item {
+    margin-bottom: 2rem;
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 8px;
+}
+
+.faq-item dt {
+    font-weight: bold;
+    color: #00695c;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.faq-item dd {
+    margin-left: 0;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Account Management */
+.account-management {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.account-management h3 {
+    margin-bottom: 1.5rem;
+    color: #444;
+    font-size: 1.2rem;
+    border-left: 4px solid #9dbdba;
+    padding-left: 10px;
+}
+
+.account-form {
+    margin-bottom: 2rem;
+}
+
+.divider {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 2rem 0;
+}
+
+.account-form button[type="submit"] {
+    background-color: #9dbdba;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.account-form button[type="submit"]:hover {
+    background-color: #7fa8a5;
+}
+/* ヒーローセクション */
+.hero-section {
+    background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+    padding: 4rem 2rem;
+    text-align: center;
+    border-radius: 0 0 50px 50px;
+    margin-bottom: 3rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.hero-inner {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-tagline {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.hero-logo-area {
+    margin-bottom: 1.5rem;
+}
+
+.hero-logo-text {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #333;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(255,255,255,0.5);
+    border-radius: 10px;
+}
+
+.hero-subheading {
+    font-size: 1.8rem;
+    color: #444;
+    margin-bottom: 2rem;
+}
+
+.hero-highlight-box {
+    background-color: #fff;
+    display: inline-block;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    margin-bottom: 2.5rem;
+    transform: rotate(-2deg);
+    transition: transform 0.3s;
+}
+
+.hero-highlight-box:hover {
+    transform: rotate(0deg) scale(1.05);
+}
+
+.hero-highlight {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #e91e63;
+    margin: 0;
+}
+
+.hero-skills-container {
+    margin-bottom: 2.5rem;
+}
+
+.hero-skills {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0;
+}
+
+.hero-skills li {
+    background-color: rgba(255,255,255,0.8);
+    padding: 0.8rem 1.5rem;
+    border-radius: 20px;
+    font-weight: bold;
+    color: #555;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+.hero-footer-note {
+    font-size: 1rem;
+    color: #777;
+    background-color: #fff;
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+.hero-image-container {
+    margin-top: 3rem;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.hero-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.hero-image:hover {
+    transform: scale(1.02);
+}
+
+.hero-image-section {
+    max-width: 800px;
+    margin: 0 auto 4rem;
+    padding: 0 2rem;
+    text-align: center;
+}
+
+.hero-image-container {
+    margin-top: 0; /* Reset margin since it's now in its own section */
+}
+
+/* What's ノマドLAB セクション */
+.whats-section {
+    background-color: #fff;
+    padding: 5rem 2rem;
+    text-align: center;
+    margin-bottom: 4rem;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+}
+
+.whats-inner {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.whats-title {
+    font-size: 1.5rem;
+    color: #9dbdba;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.whats-heading {
+    font-size: 2rem;
+    color: #444;
+    margin-bottom: 2.5rem;
+    line-height: 1.4;
+}
+
+.whats-content {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 2;
+}
+
+.whats-content p {
+    margin-bottom: 1.5rem;
+}
+
+.whats-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+    text-align: left;
+    display: inline-block;
+}
+
+.whats-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.whats-list li::before {
+    content: '●';
+    color: #e91e63;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.whats-highlight {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #e91e63;
+    margin-top: 2rem;
+}
+
+/* ノマドLaBはこんなところ セクション */
+.features-section {
+    background: linear-gradient(135deg, #fdfbf7, #e0f7fa);
+    padding: 5rem 2rem;
+    text-align: center;
+    margin-bottom: 4rem;
+    border-radius: 20px;
+}
+
+.features-inner {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.features-title {
+    font-size: 2rem;
+    color: #444;
+    margin-bottom: 3rem;
+    position: relative;
+    display: inline-block;
+}
+
+.features-title::after {
+    content: '';
+    display: block;
+    width: 60%;
+    height: 4px;
+    background-color: #e91e63;
+    margin: 0.5rem auto 0;
+    border-radius: 2px;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.feature-item {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.3s;
+}
+
+.feature-item:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    font-size: 1.5rem;
+}
+
+.feature-text {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #555;
+    text-align: left;
+}
+
+/* お仕事内容セクション */
+.job-content-section {
+    margin-bottom: 4rem;
+}
+
+.section-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #444;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: #9dbdba;
+    margin: 0.5rem auto 0;
+    border-radius: 2px;
+}
+
+.job-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.job-category-card {
+    background-color: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+    border: 1px solid #eee;
+}
+
+.job-category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    padding: 1.5rem;
+    text-align: center;
+    color: #fff;
+}
+
+.job-category-card.design .card-header {
+    background: linear-gradient(135deg, #ff9a9e, #fecfef);
+}
+
+.job-category-card.product .card-header {
+    background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+}
+
+.job-category-card.marketing .card-header {
+    background: linear-gradient(135deg, #84fab0, #8fd3f4);
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+.job-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.job-list li {
+    margin-bottom: 0.8rem;
+    padding-left: 1.2rem;
+    position: relative;
+    font-weight: bold;
+    color: #555;
+}
+
+.job-list li::before {
+    content: '■';
+    color: #9dbdba;
+    position: absolute;
+    left: 0;
+    font-size: 0.8rem;
+    top: 0.2rem;
+}
+
+.job-details h4 {
+    font-size: 1rem;
+    color: #9dbdba;
+    border-bottom: 2px solid #f0f2f5;
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+.job-details p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* 工賃のめやす・こんな方におすすめ セクション */
+.wages-target-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem;
+    margin-bottom: 4rem;
+}
+
+.wages-section, .target-section {
+    flex: 1;
+    min-width: 300px;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.wages-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.pie-chart-container {
+    width: 250px;
+    height: 250px;
+    position: relative;
+}
+
+.pie-chart {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(
+        #ff9a9e 0% 40%,      /* ～30,000円 */
+        #fecfef 40% 65%,     /* ～50,000円 */
+        #a18cd1 65% 85%,     /* ～75,000円 */
+        #84fab0 85% 95%,     /* 75,000円以上 */
+        #e0e0e0 95% 100%     /* 10,000円未満 */
+    );
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.wages-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+.color-1 { background-color: #ff9a9e; }
+.color-2 { background-color: #fecfef; }
+.color-3 { background-color: #a18cd1; }
+.color-4 { background-color: #84fab0; }
+.color-5 { background-color: #e0e0e0; }
+
+.label {
+    font-weight: bold;
+    color: #555;
+}
+
+.target-content {
+    padding: 1rem;
+}
+
+.target-list {
+    list-style: none;
+    padding: 0;
+}
+
+.target-list li {
+    background-color: #f0f7ff;
+    margin-bottom: 1rem;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    font-weight: bold;
+    color: #444;
+    position: relative;
+    padding-left: 3rem;
+    transition: transform 0.2s;
+}
+
+.target-list li:hover {
+    transform: translateX(5px);
+    background-color: #e6f2ff;
+}
+
+.target-list li::before {
+    content: '✔';
+    position: absolute;
+    left: 1rem;
+    color: #9dbdba;
+    font-size: 1.2rem;
+}
+
+/* サポート体制セクション */
+.support-system-section {
+    margin-bottom: 4rem;
+    background-color: #f9f9f9;
+    padding: 3rem 2rem;
+    border-radius: 20px;
+}
+
+.support-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.support-card {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+    border: 2px solid transparent;
+}
+
+.support-card:hover {
+    transform: translateY(-5px);
+    border-color: #9dbdba;
+}
+
+.support-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.support-card h3 {
+    font-size: 1.1rem;
+    color: #444;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #f0f2f5;
+    padding-bottom: 0.5rem;
+}
+
+.support-list {
+    list-style: none;
+    padding: 0;
+}
+
+.support-list li {
+    margin-bottom: 0.5rem;
+    color: #666;
+    font-weight: 500;
+}
+
+.highlight-text {
+    color: #e91e63;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.note-text {
+    font-size: 0.8rem;
+    color: #999;
+}
+
+/* 夢応援セクション */
+.dream-support-section {
+    margin-bottom: 4rem;
+}
+
+.dream-support-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.dream-card {
+    background-color: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    transition: transform 0.3s;
+}
+
+.dream-card:hover {
+    transform: translateY(-5px);
+}
+
+.dream-card-header {
+    padding: 2rem;
+    text-align: center;
+    color: #fff;
+}
+
+.dream-card.general-support .dream-card-header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.dream-card.freelance-support .dream-card-header {
+    background: linear-gradient(135deg, #ff9a9e, #fecfef);
+}
+
+.dream-card-header h3 {
+    margin: 0 0 1rem;
+    font-size: 1.5rem;
+}
+
+.dream-subtitle {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.dream-card-body {
+    padding: 2rem;
+}
+
+.dream-list {
+    list-style: none;
+    padding: 0;
+}
+
+.dream-list li {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+    font-weight: bold;
+    color: #555;
+    line-height: 1.5;
+}
+
+.dream-list li::before {
+    content: '★';
+    position: absolute;
+    left: 0;
+    color: #ffd700; /* Gold color for star */
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+}
+
+/* オフィス環境セクション */
+.office-environment-section {
+    margin-bottom: 4rem;
+    text-align: center;
+}
+
+.office-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.office-main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.office-sub-images {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.office-sub-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.office-caption {
+    font-size: 1.1rem;
+    color: #666;
+    margin-top: 1.5rem;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .office-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .office-sub-images {
+        flex-direction: row;
+    }
+}
+
+/* 追加のオフィス画像グリッド */
+.office-additional-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.office-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.office-stacked-images {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.office-image-wrapper img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    object-fit: cover;
+}
+
+.office-sub-caption {
+    font-size: 1.1rem;
+    color: #555;
+    font-weight: bold;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #f0f2f5;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .office-additional-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+}
+
+/* アクセスセクション */
+.access-section {
+    margin-bottom: 4rem;
+    text-align: center;
+    background-color: #fff;
+    padding: 3rem 2rem;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.access-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.access-info {
+    margin-bottom: 2rem;
+}
+
+.access-station {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #9dbdba;
+    margin-bottom: 0.5rem;
+}
+
+.access-phone {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 0.5rem;
+    letter-spacing: 2px;
+}
+
+.access-email {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.access-address {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+}
+
+.access-map img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }

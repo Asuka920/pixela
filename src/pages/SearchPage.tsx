@@ -10,7 +10,12 @@ const SearchPage: React.FC = () => {
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
   const [workType, setWorkType] = useState('all');
+  const [sortOrder, setSortOrder] = useState('newest'); // 'newest', 'recommended', 'likes'
   const [results, setResults] = useState<Work[] | null>(null);
+
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 36;
 
   // 機能追加: 検索サジェスト・履歴用State
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -93,9 +98,44 @@ const SearchPage: React.FC = () => {
       foundWorks = foundWorks.filter(work => work.type === workType);
     }
 
+    // 並び替え実行
+    foundWorks = sortWorks(foundWorks, sortOrder);
+
     setResults(foundWorks);
+    setCurrentPage(1); // Reset to page 1 on search
     saveHistory(keyword);
     setShowSuggestions(false);
+  };
+
+  // 並び替えロジック
+  const sortWorks = (works: Work[], order: string): Work[] => {
+    const sorted = [...works];
+    switch (order) {
+      case 'newest':
+        return sorted.sort((a, b) => {
+          // createdDate: 'YYYY/MM/DD' -> Date object comparison
+          return new Date(b.createdDate || '').getTime() - new Date(a.createdDate || '').getTime();
+        });
+      case 'recommended':
+        // ID降順（仮のおすすめ順）
+        return sorted.sort((a, b) => b.id - a.id);
+      case 'likes':
+        return sorted.sort((a, b) => b.likes - a.likes);
+      default:
+        return sorted;
+    }
+  };
+
+  // 並び順変更時
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newOrder = e.target.value;
+    setSortOrder(newOrder);
+
+    if (results) {
+      const sorted = sortWorks(results, newOrder);
+      setResults(sorted);
+      setCurrentPage(1); // Reset to page 1 on sort change
+    }
   };
 
   // 作品タイプ変更時
@@ -109,6 +149,7 @@ const SearchPage: React.FC = () => {
         foundWorks = foundWorks.filter(work => work.type === type);
       }
       setResults(foundWorks);
+      setCurrentPage(1); // Reset to page 1 on filter change
     }
   };
 
@@ -177,19 +218,66 @@ const SearchPage: React.FC = () => {
             <option value="ZINE">ZINE</option>
           </select>
         </div>
+
+        <div className="search-form-group">
+          <label htmlFor="sort-select">並び順</label>
+          <select
+            id="sort-select"
+            value={sortOrder}
+            onChange={handleSortChange}
+          >
+            <option value="newest">新着順</option>
+            <option value="recommended">おすすめ順</option>
+            <option value="likes">いいね数順</option>
+          </select>
+        </div>
         <button id="search-button" className="search-button" onClick={handleSearch}>
           検索
         </button>
       </div>
 
+
       {/* 検索結果の表示 */}
       {results && (
-        <WorkGrid
-          works={results}
-          emptyMessage="該当する作品は見つかりませんでした。"
-        />
+        <>
+          <WorkGrid
+            works={results.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)}
+            emptyMessage="該当する作品は見つかりませんでした。"
+          />
+
+          {/* Pagination Controls */}
+          {results.length > ITEMS_PER_PAGE && (
+            <div className="pagination">
+              <button
+                className="page-item"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              >
+                &lt; 前へ
+              </button>
+
+              {Array.from({ length: Math.ceil(results.length / ITEMS_PER_PAGE) }, (_, i) => (
+                <button
+                  key={i + 1}
+                  className={`page-item ${currentPage === i + 1 ? 'active' : ''}`}
+                  onClick={() => setCurrentPage(i + 1)}
+                >
+                  {i + 1}
+                </button>
+              ))}
+
+              <button
+                className="page-item"
+                disabled={currentPage === Math.ceil(results.length / ITEMS_PER_PAGE)}
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(results.length / ITEMS_PER_PAGE)))}
+              >
+                次へ &gt;
+              </button>
+            </div>
+          )}
+        </>
       )}
-    </section>
+    </section >
   );
 };
 
