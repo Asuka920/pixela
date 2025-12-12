@@ -1409,29 +1409,12 @@ img {
 
 
 
-.member-card {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.member-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
 
 .member-avatar {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     overflow: hidden;
-    margin-bottom: 1rem;
     border: 3px solid #f0f2f5;
     flex-shrink: 0;
     aspect-ratio: 1;
@@ -1459,6 +1442,10 @@ img {
     line-height: 1.5;
     height: 4.5em;
     /* 3 lines * 1.5 */
+    width: 100%;
+    /* Ensure it takes full width of parent */
+    max-width: 250px;
+    /* Restrict width to prevent expansion */
 }
 
 /* Global Nav Menu Drawer Style */
@@ -1548,21 +1535,7 @@ img {
     border: 1px solid #eee;
 }
 
-.member-card {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    /* リンクのデフォルトスタイルを上書き */
-    text-decoration: none;
-    color: inherit;
-}
 
-.member-header {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 1rem;
-}
 
 .member-skills {
     display: flex;
@@ -1700,6 +1673,7 @@ img {
 .account-form button[type="submit"]:hover {
     background-color: #7fa8a5;
 }
+
 /* ヒーローセクション */
 .hero-section {
     background: linear-gradient(135deg, #e0f7fa, #e1bee7);
@@ -1707,7 +1681,7 @@ img {
     text-align: center;
     border-radius: 0 0 50px 50px;
     margin-bottom: 3rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .hero-inner {
@@ -1732,10 +1706,10 @@ img {
     font-weight: 900;
     color: #333;
     letter-spacing: 3px;
-    text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0,0,0,0.1);
+    text-shadow: 2px 2px 0px #fff, 4px 4px 0px rgba(0, 0, 0, 0.1);
     display: inline-block;
     padding: 0.5rem 1rem;
-    background: rgba(255,255,255,0.5);
+    background: rgba(255, 255, 255, 0.5);
     border-radius: 10px;
 }
 
@@ -1750,7 +1724,7 @@ img {
     display: inline-block;
     padding: 1rem 2rem;
     border-radius: 50px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 2.5rem;
     transform: rotate(-2deg);
     transition: transform 0.3s;
@@ -1781,13 +1755,13 @@ img {
 }
 
 .hero-skills li {
-    background-color: rgba(255,255,255,0.8);
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 0.8rem 1.5rem;
     border-radius: 20px;
     font-weight: bold;
     color: #555;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    border: 1px solid rgba(255,255,255,0.5);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .hero-footer-note {
@@ -1804,7 +1778,7 @@ img {
     margin-top: 3rem;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 .hero-image {
@@ -1826,7 +1800,8 @@ img {
 }
 
 .hero-image-container {
-    margin-top: 0; /* Reset margin since it's now in its own section */
+    margin-top: 0;
+    /* Reset margin since it's now in its own section */
 }
 
 /* What's ノマドLAB セクション */
@@ -1836,7 +1811,7 @@ img {
     text-align: center;
     margin-bottom: 4rem;
     border-radius: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
 }
 
 .whats-inner {
@@ -1943,7 +1918,7 @@ img {
     background-color: #fff;
     padding: 1.5rem;
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -2000,14 +1975,14 @@ img {
     background-color: #fff;
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s;
     border: 1px solid #eee;
 }
 
 .job-category-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .card-header {
@@ -2031,7 +2006,7 @@ img {
 .card-header h3 {
     margin: 0;
     font-size: 1.5rem;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .card-body {
@@ -2085,13 +2060,14 @@ img {
     margin-bottom: 4rem;
 }
 
-.wages-section, .target-section {
+.wages-section,
+.target-section {
     flex: 1;
     min-width: 300px;
     background-color: #fff;
     padding: 2rem;
     border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
 .wages-content {
@@ -2111,14 +2087,18 @@ img {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background: conic-gradient(
-        #ff9a9e 0% 40%,      /* ～30,000円 */
-        #fecfef 40% 65%,     /* ～50,000円 */
-        #a18cd1 65% 85%,     /* ～75,000円 */
-        #84fab0 85% 95%,     /* 75,000円以上 */
-        #e0e0e0 95% 100%     /* 10,000円未満 */
-    );
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    background: conic-gradient(#ff9a9e 0% 40%,
+            /* ～30,000円 */
+            #fecfef 40% 65%,
+            /* ～50,000円 */
+            #a18cd1 65% 85%,
+            /* ～75,000円 */
+            #84fab0 85% 95%,
+            /* 75,000円以上 */
+            #e0e0e0 95% 100%
+            /* 10,000円未満 */
+        );
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .wages-legend {
@@ -2139,11 +2119,25 @@ img {
     border-radius: 4px;
 }
 
-.color-1 { background-color: #ff9a9e; }
-.color-2 { background-color: #fecfef; }
-.color-3 { background-color: #a18cd1; }
-.color-4 { background-color: #84fab0; }
-.color-5 { background-color: #e0e0e0; }
+.color-1 {
+    background-color: #ff9a9e;
+}
+
+.color-2 {
+    background-color: #fecfef;
+}
+
+.color-3 {
+    background-color: #a18cd1;
+}
+
+.color-4 {
+    background-color: #84fab0;
+}
+
+.color-5 {
+    background-color: #e0e0e0;
+}
 
 .label {
     font-weight: bold;
@@ -2194,8 +2188,14 @@ img {
 
 .support-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .support-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
 }
 
 .support-card {
@@ -2203,7 +2203,7 @@ img {
     padding: 1.5rem;
     border-radius: 15px;
     text-align: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
     transition: transform 0.3s;
     border: 2px solid transparent;
 }
@@ -2263,7 +2263,7 @@ img {
     background-color: #fff;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
     border: 1px solid #eee;
     transition: transform 0.3s;
 }
@@ -2320,8 +2320,9 @@ img {
     content: '★';
     position: absolute;
     left: 0;
-    color: #ffd700; /* Gold color for star */
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+    color: #ffd700;
+    /* Gold color for star */
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 /* オフィス環境セクション */
@@ -2342,7 +2343,7 @@ img {
     height: 100%;
     object-fit: cover;
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .office-sub-images {
@@ -2356,7 +2357,7 @@ img {
     height: 100%;
     object-fit: cover;
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .office-caption {
@@ -2370,7 +2371,7 @@ img {
     .office-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .office-sub-images {
         flex-direction: row;
     }
@@ -2400,7 +2401,7 @@ img {
     width: 100%;
     height: auto;
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     object-fit: cover;
 }
 
@@ -2429,7 +2430,7 @@ img {
     background-color: #fff;
     padding: 3rem 2rem;
     border-radius: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
 }
 
 .access-content {
@@ -2472,5 +2473,53 @@ img {
     width: 100%;
     height: auto;
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Re-applied Member Card Styles for Global Consistency */
+.member-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* リンクのデフォルトスタイルを上書き */
+    text-decoration: none;
+    color: inherit;
+
+    /* Visual Styles */
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.member-header {
+    display: flex;
+    align-items: flex-start;
+    /* Fix vertical alignment to top */
+    justify-content: center;
+    /* Center the icon and info block */
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.member-info {
+    text-align: left;
+    /* Keep info left aligned relative to icon */
+    width: 250px;
+    /* Fixed width to prevent horizontal shift */
+}
+
+/* Detail Page Spacing */
+#mypage,
+#work-detail,
+#creator-profile {
+    padding-top: 8rem;
+    /* Increase top padding to avoid header overlap */
 }

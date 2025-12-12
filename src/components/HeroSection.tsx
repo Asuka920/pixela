@@ -6,7 +6,7 @@ const HeroSection: React.FC = () => {
             <div className="hero-inner">
                 <p className="hero-tagline">稼いで、学んで、成長できる就労移行支援B型</p>
                 <div className="hero-logo-area">
-                    <h1 className="hero-logo-text">ノマドLAB</h1>
+                    <h1 className="hero-logo-text">ノマドLaB</h1>
                 </div>
                 <h2 className="hero-subheading">あなたの“やってみたい”が仕事になる</h2>
                 <div className="hero-highlight-box">

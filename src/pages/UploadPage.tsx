@@ -49,11 +49,23 @@ const UploadPage: React.FC = () => {
 
             {/* 作品説明の下にURL項目を追加 */}
             <div className="form-group">
-              <label htmlFor="work-url">URL</label>
+              <label htmlFor="work-url">
+                {contentType === 'website' ? 'WebサイトのURL' :
+                  contentType === 'game' ? 'ゲームの公開URL' :
+                    contentType === 'video' ? '動画URL (YouTube等)' :
+                      contentType === 'zine' ? 'PDFのダウンロードURL' :
+                        '関連URL'}
+              </label>
               <input
                 type="url"
                 id="work-url"
-                placeholder="https://example.com"
+                placeholder={
+                  contentType === 'website' ? 'https://example.com' :
+                    contentType === 'game' ? 'https://itch.io/games/...' :
+                      contentType === 'video' ? 'https://youtube.com/...' :
+                        contentType === 'zine' ? 'https://... (PDFファイルのURL)' :
+                          'https://example.com'
+                }
                 required={contentType === 'website' || contentType === 'video' || contentType === 'game'}
               />
             </div>

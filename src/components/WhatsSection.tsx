@@ -4,7 +4,7 @@ const WhatsSection: React.FC = () => {
     return (
         <section className="whats-section">
             <div className="whats-inner">
-                <h2 className="whats-title">What's ノマドLAB</h2>
+                <h2 className="whats-title">What's ノマドLaB</h2>
                 <h3 className="whats-heading">働くっておもしろい。そう思える体験を。</h3>
                 <div className="whats-content">
                     <p>

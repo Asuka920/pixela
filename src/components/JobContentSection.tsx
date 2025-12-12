@@ -23,7 +23,7 @@ const JobContentSection: React.FC = () => {
                             <p>Instagram・X・TikTok・YouTube・note</p>
 
                             <h4>身につくスキル</h4>
-                            <p>Adobe/illustrator/Photoshop/Premiere Pro/<br />Canva/Figma/CLIP STUDIO</p>
+                            <p>Adobe/illustrator/Photoshop/Premiere Pro/Canva/Figma/CLIP STUDIO</p>
                         </div>
                     </div>
                 </div>

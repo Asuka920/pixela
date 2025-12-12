@@ -9,35 +9,38 @@ interface WorkCardProps {
 }
 
 const WorkCard: React.FC<WorkCardProps> = ({ work }) => {
-  const { toggleLike } = useData();
+  const { toggleLike, getWorkById } = useData();
+
+  // Get the latest work state from context to ensure likes are reactive
+  const currentWork = getWorkById(work.id) || work;
 
   // カード内のボタンクリックでページ遷移しないように
   const handleLikeClick = (e: React.MouseEvent) => {
-    e.preventDefault(); 
+    e.preventDefault();
     e.stopPropagation();
     toggleLike(work.id);
   };
 
   return (
-    <div className="work-card"> {/* */}
-      <Link to={`/work/${work.id}`}>
-        <img src={work.imageUrls[0]} alt={work.title} loading="lazy" />
+    <div className="work-card">
+      <Link to={`/work/${currentWork.id}`}>
+        <img src={currentWork.imageUrls[0]} alt={currentWork.title} loading="lazy" />
         <div className="work-info">
-          <h3>{work.title}</h3>
+          <h3>{currentWork.title}</h3>
         </div>
       </Link>
-      <div className="work-meta"> {/* */}
-        <Link to={`/profile/${work.authorId}`} className="author-link">
+      <div className="work-meta">
+        <Link to={`/profile/${currentWork.authorId}`} className="author-link">
           <i className="fas fa-user-circle"></i>
-          <span>{work.author}</span>
+          <span>{currentWork.author}</span>
         </Link>
-        <button 
-          className="like-button" 
+        <button
+          className="like-button"
           onClick={handleLikeClick}
-          aria-label={work.liked ? 'いいねを取り消す' : 'いいねする'}
+          aria-label={currentWork.liked ? 'いいねを取り消す' : 'いいねする'}
         >
-          <i className={`${work.liked ? 'fas' : 'far'} fa-heart`}></i> {/* */}
-          <span>{work.likes}</span>
+          <i className={`${currentWork.liked ? 'fas' : 'far'} fa-heart`}></i>
+          <span>{currentWork.likes}</span>
         </button>
       </div>
     </div>
