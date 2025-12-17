@@ -7,6 +7,33 @@ import { SnsLinks, Creator } from '../types';//'type'
 
 type MyPageTab = 'uploaded' | 'liked' | 'following' | 'followers' | 'profile-edit' | 'account-management';
 
+const AVAILABLE_SKILLS = [
+  'Procreate',
+  'デジタルイラスト',
+  '色彩設計',
+  'Adobe Animate',
+  'Photoshop',
+  'アニメーション',
+  'Scratch',
+  'ゲームデザイン',
+  'プログラミング',
+  'HTML',
+  'CSS',
+  'JavaScript',
+  'Webデザイン',
+  '写真撮影',
+  'InDesign',
+  'ZINE制作',
+  'CLIP STUDIO PAINT',
+  'キャラクターデザイン',
+  'Blender',
+  '3Dモデリング',
+  '動画編集',
+  'Premiere Pro',
+  'After Effects',
+  'Unity'
+];
+
 const MyPage: React.FC = () => {
   const { profile, updateProfile, isLoggedIn } = useAuth();
   const { works, users } = useData();
@@ -16,6 +43,7 @@ const MyPage: React.FC = () => {
   const [name, setName] = useState(profile.name);
   const [bio, setBio] = useState(profile.bio);
   const [sns, setSns] = useState<SnsLinks>(profile.sns);
+  const [skills, setSkills] = useState<string[]>(profile.skills || []);
 
   // アカウント管理用のローカルステート
   const [email, setEmail] = useState('user@example.com'); // ダミー初期値
@@ -28,12 +56,21 @@ const MyPage: React.FC = () => {
     setName(profile.name);
     setBio(profile.bio);
     setSns(profile.sns);
+    setSkills(profile.skills || []);
   }, [profile]);
 
   // script.js updateMyProfile
   const handleProfileSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateProfile(name, bio, sns);
+    updateProfile(name, bio, sns, skills);
+  };
+
+  const handleSkillChange = (skill: string) => {
+    setSkills(prev =>
+      prev.includes(skill)
+        ? prev.filter(s => s !== skill)
+        : [...prev, skill]
+    );
   };
 
   const handleSnsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,6 +150,23 @@ const MyPage: React.FC = () => {
                 <input type="url" name="facebook" placeholder="https://facebook.com/username" value={sns.facebook} onChange={handleSnsChange} />
               </div>
             </div>
+
+            <div className="form-group skills-group">
+              <label>スキル</label>
+              <div className="skills-checkbox-container">
+                {AVAILABLE_SKILLS.map(skill => (
+                  <label key={skill} className="skill-checkbox-label">
+                    <input
+                      type="checkbox"
+                      value={skill}
+                      checked={skills.includes(skill)}
+                      onChange={() => handleSkillChange(skill)}
+                    />
+                    {skill}
+                  </label>
+                ))}
+              </div>
+            </div>
             <button type="submit">プロフィールを更新</button>
           </form>
         );
@@ -175,7 +229,7 @@ const MyPage: React.FC = () => {
       default:
         return null;
     }
-  }, [activeTab, works, users, name, bio, sns, updateProfile, email, currentPassword, newPassword, confirmPassword]);
+  }, [activeTab, works, users, name, bio, sns, skills, updateProfile, email, currentPassword, newPassword, confirmPassword]);
 
   // ログインしていない場合はマイページを表示しない（またはログインを促す）
   if (!isLoggedIn) {

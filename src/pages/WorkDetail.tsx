@@ -9,7 +9,7 @@ import ZineViewer from '../components/ZineViewer';
 
 const WorkDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { getWorkById, toggleLike, addComment } = useData();
+  const { getWorkById, toggleLike } = useData();
   const { isLoggedIn } = useAuth();
   const [commentText, setCommentText] = useState('');
 

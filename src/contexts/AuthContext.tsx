@@ -7,7 +7,7 @@ interface AuthContextType {
   isLoggedIn: boolean;
   profile: UserProfile;
   toggleLoginState: () => void;
-  updateProfile: (name: string, bio: string, sns: SnsLinks) => void;
+  updateProfile: (name: string, bio: string, sns: SnsLinks, skills: string[]) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -32,12 +32,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoggedIn(prev => !prev);
   };
 
-  const updateProfile = (name: string, bio: string, sns: SnsLinks) => {
+  const updateProfile = (name: string, bio: string, sns: SnsLinks, skills: string[]) => {
     setProfile(prev => ({
       ...prev,
       name,
       bio,
       sns,
+      skills,
     }));
     alert('プロフィールが更新されました！'); //
   };

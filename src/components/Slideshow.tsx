@@ -1,7 +1,7 @@
 // src/components/Slideshow.tsx
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Work } from '../types';
+
 
 interface SlideshowWork {
   id: number;
@@ -39,9 +39,9 @@ const Slideshow: React.FC<SlideshowProps> = ({ works }) => {
 
   return (
     <div className="slideshow-container" id="popular-slideshow-container"> {/* */}
-      <div 
-        className="slideshow-wrapper" 
-        id="popular-slideshow-wrapper" 
+      <div
+        className="slideshow-wrapper"
+        id="popular-slideshow-wrapper"
         style={transformStyle}
       > {/* */}
         {works.map((work) => (
