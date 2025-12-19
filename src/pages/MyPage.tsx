@@ -44,6 +44,7 @@ const MyPage: React.FC = () => {
   const [bio, setBio] = useState(profile.bio);
   const [sns, setSns] = useState<SnsLinks>(profile.sns);
   const [skills, setSkills] = useState<string[]>(profile.skills || []);
+  const [jobStatus, setJobStatus] = useState<'accepting' | 'discussion' | 'closed'>(profile.jobStatus || 'closed');
 
   // アカウント管理用のローカルステート
   const [email, setEmail] = useState('user@example.com'); // ダミー初期値
@@ -57,12 +58,13 @@ const MyPage: React.FC = () => {
     setBio(profile.bio);
     setSns(profile.sns);
     setSkills(profile.skills || []);
+    setJobStatus(profile.jobStatus || 'closed');
   }, [profile]);
 
   // script.js updateMyProfile
   const handleProfileSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateProfile(name, bio, sns, skills);
+    updateProfile(name, bio, sns, skills, jobStatus);
   };
 
   const handleSkillChange = (skill: string) => {
@@ -100,7 +102,7 @@ const MyPage: React.FC = () => {
     switch (activeTab) {
       case 'uploaded':
         const uploadedWorks = works.filter(w => w.uploaded);
-        return <WorkGrid works={uploadedWorks} emptyMessage="まだアップロードした作品はありません。" />;
+        return <WorkGrid works={uploadedWorks} emptyMessage="まだアップロードした作品はありません。" isEditable={true} />;
       case 'liked':
         const likedWorks = works.filter(w => w.liked);
         return <WorkGrid works={likedWorks} emptyMessage="まだいいねした作品はありません。" />;
@@ -149,6 +151,19 @@ const MyPage: React.FC = () => {
                 <i className="fab fa-facebook"></i>
                 <input type="url" name="facebook" placeholder="https://facebook.com/username" value={sns.facebook} onChange={handleSnsChange} />
               </div>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="job-status-select">お仕事依頼設定</label>
+              <select
+                id="job-status-select"
+                value={jobStatus}
+                onChange={(e) => setJobStatus(e.target.value as any)}
+              >
+                <option value="accepting">募集中</option>
+                <option value="discussion">相談可能</option>
+                <option value="closed">募集停止中</option>
+              </select>
             </div>
 
             <div className="form-group skills-group">

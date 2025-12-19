@@ -2,16 +2,18 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useData } from '../contexts/DataContext';
-import { useAuth } from '../contexts/AuthContext';
+// import { useAuth } from '../contexts/AuthContext';
 import VideoPlayer from '../components/VideoPlayer';
 import GameEmbed from '../components/GameEmbed';
 import ZineViewer from '../components/ZineViewer';
 
 const WorkDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { getWorkById, toggleLike } = useData();
-  const { isLoggedIn } = useAuth();
+  const { getWorkById, toggleLike, addComment, getCreatorById } = useData();
+  // const { isLoggedIn } = useAuth();
   const [commentText, setCommentText] = useState('');
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [reportingCommentId, setReportingCommentId] = useState<string | null>(null);
 
   // URLパラメータは文字列なので数値に変換
   const work = getWorkById(Number(id));
@@ -30,9 +32,26 @@ const WorkDetail: React.FC = () => {
   const handleCommentSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (commentText.trim()) {
-      // addComment(work.id, commentText); // リアルタイム反映を無効化
+      addComment(work.id, commentText); // リアルタイム反映
       alert('コメントを送信しました');
       setCommentText('');
+    }
+  };
+
+  const openReportModal = (commentId: string) => {
+    setReportingCommentId(commentId);
+    setShowReportModal(true);
+  };
+
+  const closeReportModal = () => {
+    setShowReportModal(false);
+    setReportingCommentId(null);
+  };
+
+  const confirmReport = () => {
+    if (reportingCommentId) {
+      alert(`コメント (ID: ${reportingCommentId}) を通報しました。`);
+      closeReportModal();
     }
   };
 
@@ -60,14 +79,7 @@ const WorkDetail: React.FC = () => {
           <p>動画URLが設定されていません。</p>
         );
 
-      case 'game':
-        return work.gameUrl ? (
-          <GameEmbed gameUrl={work.gameUrl} title={work.title} />
-        ) : (
-          <p>ゲームURLが設定されていません。</p>
-        );
-
-      case 'website':
+      case 'product':
         return (
           <div className="website-preview">
             {work.imageUrls.length > 0 && (
@@ -77,15 +89,40 @@ const WorkDetail: React.FC = () => {
                 className="website-screenshot"
               />
             )}
-            {work.websiteUrl && (
+            {work.productUrl && (
               <div className="website-link-container">
                 <a
-                  href={work.websiteUrl}
+                  href={work.productUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="website-link"
                 >
-                  <i className="fas fa-external-link-alt"></i> Webサイトを見る
+                  <i className="fas fa-external-link-alt"></i> Webサイト/プロダクトを見る
+                </a>
+              </div>
+            )}
+          </div>
+        );
+
+      case 'other':
+        return (
+          <div className="website-preview"> {/* Reusing similar layout for other */}
+            {work.imageUrls.length > 0 && (
+              <img
+                src={work.imageUrls[0]}
+                alt={`${work.title}`}
+                className="website-screenshot"
+              />
+            )}
+            {work.otherUrl && (
+              <div className="website-link-container">
+                <a
+                  href={work.otherUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="website-link"
+                >
+                  <i className="fas fa-external-link-alt"></i> リンクを開く
                 </a>
               </div>
             )}
@@ -120,9 +157,9 @@ const WorkDetail: React.FC = () => {
           <div className="work-type-badge">
             {work.type === 'image' && <><i className="fas fa-image"></i> 画像</>}
             {work.type === 'video' && <><i className="fas fa-video"></i> 動画</>}
-            {work.type === 'game' && <><i className="fas fa-gamepad"></i> ゲーム</>}
-            {work.type === 'website' && <><i className="fas fa-globe"></i> Webサイト</>}
+            {work.type === 'product' && <><i className="fas fa-box-open"></i> プロダクト</>}
             {work.type === 'zine' && <><i className="fas fa-book"></i> Zine</>}
+            {work.type === 'other' && <><i className="fas fa-ellipsis-h"></i> その他</>}
           </div>
           <div className="creator-info">
             <Link to={`/profile/${work.authorId}`}>
@@ -191,31 +228,105 @@ const WorkDetail: React.FC = () => {
             <textarea
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
-              placeholder={isLoggedIn ? 'コメントを入力...' : 'ログインするとコメントできます'}
-              disabled={!isLoggedIn}
+              placeholder="コメントを入力..."
             ></textarea>
-            <button type="submit" disabled={!isLoggedIn || !commentText.trim()}>
-              コメントを送る
+            <button type="submit" disabled={!commentText.trim()}>
+              コメントを投稿
             </button>
           </form>
           <ul className="comment-list">
             {work.comments.length === 0 ? (
               <p>まだコメントはありません。</p>
             ) : (
-              work.comments.map((c, index) => (
-                <li className="comment-item" key={index}>
-                  <div className="comment-meta">
-                    <strong>{c.userName}</strong>
-                    <span>{c.date}</span>
-                  </div>
-                  <p className="comment-text">{c.text}</p>
-                </li>
-              ))
+              work.comments.map((c, index) => {
+                const creator = c.userId ? getCreatorById(c.userId) : null;
+                const userIcon = creator ? creator.profileIconUrl : null;
+                const isGuest = !creator;
+
+                return (
+                  <li className="comment-item" key={index}>
+                    <div className="comment-avatar">
+                      {isGuest ? (
+                        <div className="guest-icon"><i className="fas fa-user"></i></div>
+                      ) : (
+                        <Link to={`/profile/${c.userId}`}>
+                          <img src={userIcon || ''} alt={c.userName} />
+                        </Link>
+                      )}
+                    </div>
+                    <div className="comment-content-wrapper">
+                      <div className="comment-meta">
+                        <strong>{c.userName}</strong>
+                        <span>{c.date}</span>
+                        <button
+                          className="report-button"
+                          onClick={() => openReportModal(c.id)}
+                        >
+                          通報
+                        </button>
+                      </div>
+                      <p className="comment-text">{c.text}</p>
+                    </div>
+                  </li>
+                );
+              })
             )}
           </ul>
         </div>
+
+        {/* Job Request Section */}
+        <JobRequestSection authorId={work.authorId} />
       </div>
+
+      {/* Confirmation Modal */}
+      {showReportModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <p className="modal-text">このコメントを通報しますか？</p>
+            <div className="modal-actions">
+              <button className="modal-button confirm" onClick={confirmReport}>はい</button>
+              <button className="modal-button cancel" onClick={closeReportModal}>いいえ</button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
+  );
+};
+
+const JobRequestSection: React.FC<{ authorId: string }> = ({ authorId }) => {
+  const { getCreatorById } = useData();
+  const author = getCreatorById(authorId);
+
+  if (!author || !author.jobStatus) return null;
+
+  const getStatusBadge = (status: 'accepting' | 'discussion' | 'closed') => {
+    switch (status) {
+      case 'accepting':
+        return <span className="job-status-badge accepting">募集中</span>;
+      case 'discussion':
+        return <span className="job-status-badge discussion">相談可能</span>;
+      case 'closed':
+        return <span className="job-status-badge closed">募集停止中</span>;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="job-request-section">
+      <h3>お仕事依頼</h3>
+      <div className="job-request-content">
+        <p>このクリエイターにお仕事を依頼しますか？</p>
+        <div className="job-status-display">
+          <span>現在のステータス: </span>
+          {getStatusBadge(author.jobStatus)}
+        </div>
+        <Link to={`/contact?subject=job`} className="job-request-button">
+          お仕事依頼
+        </Link>
+      </div>
+    </div>
   );
 };
 

@@ -32,6 +32,7 @@ const WagesAndTargetSection: React.FC = () => {
                             <span className="label">10,000円未満 (5%)</span>
                         </div>
                     </div>
+                    <p className="wages-date">※2025年10月時点</p>
                 </div>
             </section>
 

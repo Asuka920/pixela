@@ -28,9 +28,9 @@ const UploadPage: React.FC = () => {
               >
                 <option value="image">画像</option>
                 <option value="video">動画</option>
-                <option value="game">ゲーム</option>
-                <option value="website">Webサイト</option>
+                <option value="product">プロダクト/Webサイト</option>
                 <option value="zine">Zine</option>
+                <option value="other">その他</option>
               </select>
             </div>
 
@@ -50,23 +50,22 @@ const UploadPage: React.FC = () => {
             {/* 作品説明の下にURL項目を追加 */}
             <div className="form-group">
               <label htmlFor="work-url">
-                {contentType === 'website' ? 'WebサイトのURL' :
-                  contentType === 'game' ? 'ゲームの公開URL' :
-                    contentType === 'video' ? '動画URL (YouTube等)' :
-                      contentType === 'zine' ? 'PDFのダウンロードURL' :
+                {contentType === 'product' ? 'Webサイト/プロダクトのURL' :
+                  contentType === 'video' ? '動画URL (YouTube等)' :
+                    contentType === 'zine' ? 'PDFのダウンロードURL' :
+                      contentType === 'other' ? '関連URL' :
                         '関連URL'}
               </label>
               <input
                 type="url"
                 id="work-url"
                 placeholder={
-                  contentType === 'website' ? 'https://example.com' :
-                    contentType === 'game' ? 'https://itch.io/games/...' :
-                      contentType === 'video' ? 'https://youtube.com/...' :
-                        contentType === 'zine' ? 'https://... (PDFファイルのURL)' :
-                          'https://example.com'
+                  contentType === 'product' ? 'https://example.com' :
+                    contentType === 'video' ? 'https://youtube.com/...' :
+                      contentType === 'zine' ? 'https://... (PDFファイルのURL)' :
+                        'https://...'
                 }
-                required={contentType === 'website' || contentType === 'video' || contentType === 'game'}
+                required={contentType === 'product' || contentType === 'video' || contentType === 'other'}
               />
             </div>
 
@@ -79,6 +78,20 @@ const UploadPage: React.FC = () => {
             <div className="form-group">
               <label htmlFor="work-tags">タグ (カンマ区切り)</label>
               <input type="text" id="work-tags" placeholder="例: デジタルアート, 青, 幻想" />
+            </div>
+
+            {/* 制作情報（追加項目） */}
+            <div className="form-group">
+              <label htmlFor="production-date">制作日</label>
+              <input type="date" id="production-date" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="work-tools">使用ツール (カンマ区切り)</label>
+              <input type="text" id="work-tools" placeholder="例: Photoshop, Illustrator, Unity" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="work-duration">制作期間</label>
+              <input type="text" id="work-duration" placeholder="例: 3日, 2週間" />
             </div>
             <button type="submit">投稿する</button>
           </form>

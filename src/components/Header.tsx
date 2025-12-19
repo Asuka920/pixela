@@ -42,7 +42,8 @@ const Header: React.FC = () => {
             <li><Link to="/members" onClick={closeMenu}>メンバー一覧</Link></li>
             {isLoggedIn && (
               <>
-                <li><Link to="/upload" onClick={closeMenu}>作品アップロードページ</Link></li>
+                <li><Link to="/upload" onClick={closeMenu}>作品投稿</Link></li>
+                <li><Link to="/edit-works" onClick={closeMenu}>作品編集</Link></li>
                 <li><Link to="/mypage" onClick={closeMenu}>マイページ</Link></li>
               </>
             )}

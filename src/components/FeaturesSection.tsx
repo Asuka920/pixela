@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const FeaturesSection: React.FC = () => {
     const features = [
@@ -20,6 +21,11 @@ const FeaturesSection: React.FC = () => {
                         </li>
                     ))}
                 </ul>
+                <div className="features-more-container">
+                    <Link to="/about" className="features-more-button">
+                        ノマドLaBをもっと知る <i className="fas fa-arrow-right"></i>
+                    </Link>
+                </div>
             </div>
         </section>
     );

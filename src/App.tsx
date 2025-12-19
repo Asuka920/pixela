@@ -16,6 +16,8 @@ import ContactPage from './pages/ContactPage';
 import SignupPage from './pages/SignupPage';
 import MembersPage from './pages/MembersPage';
 import HelpPage from './pages/HelpPage';
+import EditWorkListPage from './pages/EditWorkListPage';
+import EditWorkPage from './pages/EditWorkPage';
 
 const App: React.FC = () => {
   return (
@@ -34,6 +36,8 @@ const App: React.FC = () => {
           <Route path="/members" element={<MembersPage />} />
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/work/:id" element={<WorkDetail />} />
+          <Route path="/edit-works" element={<EditWorkListPage />} />
+          <Route path="/work/edit/:id" element={<EditWorkPage />} />
           <Route path="/profile/:userId" element={<CreatorProfile />} />
 
           {/* 元の #home に相当 */}

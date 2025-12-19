@@ -7,7 +7,8 @@ export const initialMyProfile: UserProfile = {
   bio: 'Pixelaへようこそ！',
   // 元の 'Public/S__20742150-1024x1024.jpg'
   profileIconUrl: '/images/S__20742150-1024x1024.jpg',
-  sns: { twitter: '', instagram: '', facebook: '' }
+  sns: { twitter: '', instagram: '', facebook: '' },
+  jobStatus: 'accepting'
 };
 
 export const initialWorks: Work[] = [
@@ -24,7 +25,11 @@ export const initialWorks: Work[] = [
     uploaded: true,
     liked: true,
     description: '青を基調とした鮮やかなデジタルアート作品。Procreateを使用して制作しました。',
-    comments: [{ userName: '佐藤 花子', text: '素晴らしい色彩ですね！感動しました！', date: '2025/10/01' }],
+    comments: [
+      { id: 'c1', userId: 'user-d', userName: '佐藤 花子', text: '素晴らしい色彩ですね！感動しました！', date: '2025/10/01' },
+      { id: 'c2', userId: 'user-b', userName: '鈴木 次郎', text: '青の使い方がとても綺麗です。', date: '2025/10/03' }, // Dummy
+      { id: 'c3', userId: 'user-c', userName: '山田 三郎', text: '参考にさせていただきます！', date: '2025/10/05' }  // Dummy
+    ],
     createdDate: '2025/09/15',
     uploadedDate: '2025/09/20',
     tools: ['Procreate', 'iPad Pro'],
@@ -46,7 +51,9 @@ export const initialWorks: Work[] = [
     uploaded: false,
     liked: true,
     description: '手描きアニメーションで制作した短編作品です。夢の中の不思議な世界を表現しました。',
-    comments: [],
+    comments: [
+      { id: 'c4', userId: 'user-a', userName: '田中 太郎', text: '動きが滑らかで素敵です！', date: '2025/08/26' } // Dummy
+    ],
     createdDate: '2025/08/20',
     uploadedDate: '2025/08/25',
     tools: ['Adobe Animate', 'Photoshop'],
@@ -55,20 +62,24 @@ export const initialWorks: Work[] = [
   },
 
   // ゲーム作品
+  // その他作品（元ゲーム）
   {
     id: 3,
     title: 'パズルゲーム「光の結晶」',
     author: '山田 三郎',
     authorId: 'user-c',
-    type: 'game',
+    type: 'other',
     imageUrls: ['/images/S__20742150-1024x1024.jpg'],
-    gameUrl: 'https://example.com/game/crystal-puzzle', // サンプルURL
+    otherUrl: 'https://example.com/game/crystal-puzzle', // サンプルURL
     tags: ['ゲーム', 'パズル'],
     likes: 250,
     uploaded: true,
     liked: false,
     description: 'Scratchで制作したパズルゲームです。光の結晶を集めてステージをクリアしよう！',
-    comments: [{ userName: '田中 太郎', text: '楽しいゲームですね！', date: '2025/10/02' }],
+    comments: [
+      { id: 'c5', userId: 'user-a', userName: '田中 太郎', text: '楽しいゲームですね！', date: '2025/10/02' },
+      { id: 'c6', userId: 'user-d', userName: '佐藤 花子', text: 'クリアできません😭 難しくて面白い！', date: '2025/10/04' } // Dummy
+    ],
     createdDate: '2025/07/10',
     uploadedDate: '2025/07/15',
     tools: ['Scratch'],
@@ -76,15 +87,15 @@ export const initialWorks: Work[] = [
     awards: []
   },
 
-  // Webサイト作品
+  // プロダクト作品（元Webサイト）
   {
     id: 4,
     title: 'ポートフォリオサイト',
     author: '佐藤 花子',
     authorId: 'user-d',
-    type: 'website',
+    type: 'product',
     imageUrls: ['/images/istockphoto-1289906195-612x612.jpg'],
-    websiteUrl: 'https://example.com/portfolio', // サンプルURL
+    productUrl: 'https://example.com/portfolio', // サンプルURL
     tags: ['Webデザイン', 'HTML/CSS'],
     likes: 98,
     uploaded: false,
@@ -112,7 +123,9 @@ export const initialWorks: Work[] = [
     uploaded: true,
     liked: false,
     description: '街の風景を撮影した写真をまとめたZINEです。日常の中に潜む美しさを切り取りました。',
-    comments: [],
+    comments: [
+      { id: 'c7', userId: 'user-f', userName: '伊藤 六子', text: '写真の雰囲気がとても好きです。', date: '2025/06/21' } // Dummy
+    ],
     createdDate: '2025/06/15',
     uploadedDate: '2025/06/20',
     tools: ['カメラ', 'Photoshop', 'InDesign'],
@@ -255,6 +268,7 @@ export const initialUsers: Creator[] = [
     works: [1, 8, 9],
     skills: ['Procreate', 'デジタルイラスト', '色彩設計'],
     joinDate: '2024/04/01',
+    jobStatus: 'accepting'
   },
   {
     id: 'user-b',
@@ -267,7 +281,8 @@ export const initialUsers: Creator[] = [
     works: [2, 10],
     skills: ['Adobe Animate', 'Photoshop', 'アニメーション'],
     joinDate: '2024/05/15',
-    awards: ['地域アート展 優秀賞']
+    awards: ['地域アート展 優秀賞'],
+    jobStatus: 'discussion'
   },
   {
     id: 'user-c',
@@ -280,6 +295,7 @@ export const initialUsers: Creator[] = [
     works: [3],
     skills: ['Scratch', 'ゲームデザイン', 'プログラミング'],
     joinDate: '2024/03/10',
+    jobStatus: 'closed'
   },
   {
     id: 'user-d',
@@ -292,6 +308,7 @@ export const initialUsers: Creator[] = [
     works: [4],
     skills: ['HTML', 'CSS', 'JavaScript', 'Webデザイン'],
     joinDate: '2024/06/01',
+    jobStatus: 'accepting'
   },
   {
     id: 'user-e',
@@ -304,6 +321,7 @@ export const initialUsers: Creator[] = [
     works: [5],
     skills: ['写真撮影', 'Photoshop', 'InDesign', 'ZINE制作'],
     joinDate: '2024/02/20',
+    jobStatus: 'discussion'
   },
   {
     id: 'user-f',
@@ -316,6 +334,7 @@ export const initialUsers: Creator[] = [
     works: [6],
     skills: ['写真撮影'],
     joinDate: '2024/09/01',
+    jobStatus: 'accepting'
   },
   {
     id: 'user-g',
@@ -328,6 +347,7 @@ export const initialUsers: Creator[] = [
     works: [7, 11],
     skills: ['CLIP STUDIO PAINT', 'イラスト', 'キャラクターデザイン'],
     joinDate: '2024/07/10',
-    awards: ['デジタルアート展 入選']
+    awards: ['デジタルアート展 入選'],
+    jobStatus: 'accepting'
   }
 ];

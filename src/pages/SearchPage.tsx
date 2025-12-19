@@ -29,7 +29,7 @@ const SearchPage: React.FC = () => {
     'グラフィック', 'ロゴ', 'ポスター', '名刺',
     '写真', 'ポートレート', '風景', 'プロダクトデザイン',
     '3D', 'ファンタジー', 'SF', '水彩', '厚塗り',
-    'ゲーム', 'パズル', 'ZINE'
+    'プロダクト', 'パズル', 'ZINE', 'その他'
   ];
 
   // 履歴をlocalStorageから取得
@@ -213,9 +213,10 @@ const SearchPage: React.FC = () => {
             <option value="3D">3D</option>
             <option value="ファンタジー">ファンタジー</option>
             <option value="アニメーション">アニメーション</option>
-            <option value="ゲーム">ゲーム</option>
+            <option value="プロダクト">プロダクト</option>
             <option value="Webデザイン">Webデザイン</option>
             <option value="ZINE">ZINE</option>
+            <option value="その他">その他</option>
           </select>
         </div>
 

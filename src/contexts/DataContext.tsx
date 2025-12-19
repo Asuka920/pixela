@@ -14,6 +14,8 @@ interface DataContextType {
   addComment: (workId: number, commentText: string) => void;
   toggleFollow: (userId: string) => void;
   searchWorks: (keyword: string, category: string) => Work[];
+  updateWork: (work: Work) => void;
+  deleteWork: (id: number) => void;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -42,7 +44,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const getCreatorById = (userId: string) => users.find(u => u.id === userId);
 
   const toggleLike = (workId: number) => {
-    setWorks(prevWorks => 
+    setWorks(prevWorks =>
       prevWorks.map(w => {
         if (w.id === workId) {
           const newLiked = !w.liked;
@@ -59,9 +61,11 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
       prevWorks.map(w => {
         if (w.id === workId) {
           const newComment = {
-            userName: profile.name, //
+            id: `nc-${Date.now()}`, // Generate unique ID
+            userName: profile.name || 'ゲストユーザー',
+            userId: profile.id || undefined, // Add userId if logged in
             text: commentText,
-            date: new Date().toLocaleDateString('ja-JP') //
+            date: new Date().toLocaleDateString('ja-JP')
           };
           return { ...w, comments: [...w.comments, newComment] };
         }
@@ -72,7 +76,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
 
   const toggleFollow = (userId: string) => {
     setUsers(prevUsers =>
-      prevUsers.map(u => 
+      prevUsers.map(u =>
         u.id === userId ? { ...u, following: !u.following } : u
       )
     );
@@ -81,13 +85,25 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const searchWorks = (keyword: string, category: string): Work[] => {
     const lowerKeyword = keyword.toLowerCase();
     return works.filter(work => {
-      const keywordMatch = !keyword || 
+      const keywordMatch = !keyword ||
         work.title.toLowerCase().includes(lowerKeyword) ||
         work.author.toLowerCase().includes(lowerKeyword) ||
         work.tags.some(tag => tag.toLowerCase().includes(lowerKeyword));
       const categoryMatch = !category || work.tags.includes(category);
       return keywordMatch && categoryMatch;
     }); //
+  };
+
+  const updateWork = (updatedWork: Work) => {
+    setWorks(prevWorks => prevWorks.map(w => (w.id === updatedWork.id ? updatedWork : w)));
+    alert('作品を更新しました！');
+  };
+
+  const deleteWork = (workId: number) => {
+    setWorks(prevWorks => prevWorks.filter(w => w.id !== workId));
+    // 関連するユーザーのworks配列からも削除する必要があるが、mockDataなので簡易的に
+    // 実際のバックエンドがあれば、そこでリレーション整合性が保たれるはず
+    alert('作品を削除しました！');
   };
 
   const value = {
@@ -99,7 +115,9 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     toggleLike,
     addComment,
     toggleFollow,
-    searchWorks
+    searchWorks,
+    updateWork,
+    deleteWork
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;

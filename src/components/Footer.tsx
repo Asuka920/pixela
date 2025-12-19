@@ -9,7 +9,7 @@ const AuthLinks: React.FC = () => {
   if (!isLoggedIn) return null;
   return (
     <>
-      <li><Link to="/upload">作品アップロードページ</Link></li>
+      <li><Link to="/upload">作品投稿</Link></li>
       <li><Link to="/mypage">マイページ</Link></li>
     </>
   );

@@ -11,9 +11,9 @@ const WorkTypeFilter: React.FC<WorkTypeFilterProps> = ({ selectedType, onTypeCha
         { value: 'all', label: 'すべて', icon: 'fas fa-th' },
         { value: 'image', label: '画像', icon: 'fas fa-image' },
         { value: 'video', label: '動画', icon: 'fas fa-video' },
-        { value: 'game', label: 'ゲーム', icon: 'fas fa-gamepad' },
-        { value: 'website', label: 'Webサイト', icon: 'fas fa-globe' },
+        { value: 'product', label: 'プロダクト', icon: 'fas fa-box-open' },
         { value: 'zine', label: 'Zine', icon: 'fas fa-book' },
+        { value: 'other', label: 'その他', icon: 'fas fa-ellipsis-h' },
     ];
 
     return (

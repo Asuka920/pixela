@@ -1,6 +1,8 @@
 // src/types.ts
 
 export interface Comment {
+  id: string; // unique id
+  userId?: string; // ID of the user who commented (optional for guest)
   userName: string;
   text: string;
   date: string;
@@ -13,13 +15,13 @@ export interface Work {
   authorId: string;
 
   // 作品タイプ
-  type: 'image' | 'video' | 'game' | 'website' | 'zine';
+  type: 'image' | 'video' | 'product' | 'zine' | 'other';
 
   // タイプ別のURL
   imageUrls: string[];
   videoUrl?: string; // YouTube/Vimeo URL
-  gameUrl?: string; // ゲームのURL
-  websiteUrl?: string; // WebサイトのURL
+  productUrl?: string; // Webサイト/プロダクトのURL
+  otherUrl?: string; // その他のURL
   pdfUrl?: string; // ZineのPDF URL
 
   tags: string[];
@@ -56,6 +58,7 @@ export interface UserProfile {
   graduationDate?: string; // 卒業日
   employmentInfo?: string; // 就職先情報
   awards?: string[]; // 受賞歴
+  jobStatus?: 'accepting' | 'discussion' | 'closed'; // お仕事依頼ステータス
 }
 
 // 他のクリエイターのプロフィール（フォロー状態などを含む）
