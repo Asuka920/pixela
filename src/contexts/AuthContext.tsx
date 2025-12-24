@@ -5,8 +5,10 @@ import { UserProfile, SnsLinks } from '../types';//'type'
 
 interface AuthContextType {
   isLoggedIn: boolean;
+  userType: 'user' | 'staff' | null;
   profile: UserProfile;
-  toggleLoginState: () => void;
+  login: (type: 'user' | 'staff') => void;
+  logout: () => void;
   updateProfile: (name: string, bio: string, sns: SnsLinks, skills: string[], jobStatus: 'accepting' | 'discussion' | 'closed') => void;
 }
 
@@ -26,10 +28,30 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userType, setUserType] = useState<'user' | 'staff' | null>(null);
   const [profile, setProfile] = useState<UserProfile>(initialMyProfile);
 
-  const toggleLoginState = () => {
-    setIsLoggedIn(prev => !prev);
+  const login = (type: 'user' | 'staff') => {
+    setIsLoggedIn(true);
+    setUserType(type);
+    if (type === 'staff') {
+      // スタッフ用ダミープロフィール
+      setProfile({
+        ...initialMyProfile,
+        name: '管理スタッフT',
+        bio: 'Pixelaの管理スタッフです。',
+        skills: [],
+        jobStatus: 'closed'
+      });
+    } else {
+      setProfile(initialMyProfile);
+    }
+  };
+
+  const logout = () => {
+    setIsLoggedIn(false);
+    setUserType(null);
+    setProfile(initialMyProfile);
   };
 
   const updateProfile = (name: string, bio: string, sns: SnsLinks, skills: string[], jobStatus: 'accepting' | 'discussion' | 'closed') => {
@@ -46,8 +68,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const value = {
     isLoggedIn,
+    userType,
     profile,
-    toggleLoginState,
+    login,
+    logout,
     updateProfile
   };
 

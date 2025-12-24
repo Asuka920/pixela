@@ -4,8 +4,12 @@ import { useAuth } from '../contexts/AuthContext';
 import { useData } from '../contexts/DataContext';
 import WorkGrid from '../components/WorkGrid';
 import { SnsLinks, Creator } from '../types';//'type'
+import { Link } from 'react-router-dom';
+
 
 type MyPageTab = 'uploaded' | 'liked' | 'following' | 'followers' | 'profile-edit' | 'account-management';
+type StaffTab = 'account-management' | 'comment-management' | 'inquiry-handling' | 'tenants';
+type TabType = MyPageTab | StaffTab;
 
 const AVAILABLE_SKILLS = [
   'Procreate',
@@ -35,9 +39,21 @@ const AVAILABLE_SKILLS = [
 ];
 
 const MyPage: React.FC = () => {
-  const { profile, updateProfile, isLoggedIn } = useAuth();
+  const { profile, updateProfile, isLoggedIn, userType } = useAuth();
   const { works, users } = useData();
-  const [activeTab, setActiveTab] = useState<MyPageTab>('uploaded');
+  const [activeTab, setActiveTab] = useState<TabType>('uploaded');
+
+  // スタッフかどうか
+  const isStaff = userType === 'staff';
+
+  useEffect(() => {
+    // ログインタイプによって初期タブを設定
+    if (isStaff) {
+      setActiveTab('account-management');
+    } else {
+      setActiveTab('uploaded');
+    }
+  }, [isStaff]);
 
   // プロフィール編集フォーム用のローカルステート
   const [name, setName] = useState(profile.name);
@@ -50,7 +66,44 @@ const MyPage: React.FC = () => {
   const [email, setEmail] = useState('user@example.com'); // ダミー初期値
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  // アカウント削除モーダル用のローカルステート
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteEmail, setDeleteEmail] = useState('');
+  const [deletePassword, setDeletePassword] = useState('');
+  const [deleteError, setDeleteError] = useState('');
+
+  // コメント管理ステート
+  const [commentTab, setCommentTab] = useState<'unread' | 'read' | 'resolved'>('unread');
+  const [selectedReportIds, setSelectedReportIds] = useState<string[]>([]);
+
+  // DataContextからreportsなどを取得
+  const { reports, markReportAsRead, deleteSelectedComments } = useData();
+
+  // タブ切り替え時に選択をリセット
+  useEffect(() => {
+    setSelectedReportIds([]);
+  }, [commentTab]);
+
+  const filteredReports = reports.filter(r => r.status === commentTab);
+
+  const toggleReportSelection = (id: string) => {
+    setSelectedReportIds(prev =>
+      prev.includes(id) ? prev.filter(rId => rId !== id) : [...prev, id]
+    );
+  };
+
+  const handleBulkDelete = () => {
+    if (window.confirm('選択したコメントを削除しますか？')) {
+      deleteSelectedComments(selectedReportIds);
+    }
+  };
+
+  // ダミー認証情報
+  const MOCK_ACCOUNT_EMAIL = 'user@example.com';
+  const MOCK_ACCOUNT_PASSWORD = 'password';
 
   // AuthContextのprofileが変更されたらフォームに反映
   useEffect(() => {
@@ -95,6 +148,23 @@ const MyPage: React.FC = () => {
     setCurrentPassword('');
     setNewPassword('');
     setConfirmPassword('');
+  };
+
+  const handleDeleteAccount = (e: React.FormEvent) => {
+    e.preventDefault();
+    setDeleteError(''); // Clear previous errors
+
+    // アカウント削除のバリデーション
+    if (deleteEmail === MOCK_ACCOUNT_EMAIL && deletePassword === MOCK_ACCOUNT_PASSWORD) {
+      alert('アカウントを削除しました。（ダミー処理）');
+      setIsDeleteModalOpen(false);
+      setDeleteEmail('');
+      setDeletePassword('');
+      setDeleteError('');
+      // ここでログアウト処理などを呼ぶ想定
+    } else {
+      setDeleteError('メールアドレスもしくはパスワードが間違っています');
+    }
   };
 
   // script.js renderMyPage
@@ -239,12 +309,131 @@ const MyPage: React.FC = () => {
               </div>
               <button type="submit">パスワードを変更</button>
             </form>
+
+            <hr className="divider" />
+
+            <h3>アカウント削除</h3>
+            <div className="account-form">
+              <p style={{ marginBottom: '1rem', color: '#666' }}>
+                一度削除したアカウントは復元できません。
+              </p>
+              <button
+                type="button"
+                className="delete-account-button" // クラスを追加
+                onClick={() => {
+                  setIsDeleteModalOpen(true);
+                  setDeleteError(''); // モーダルを開くときにエラーをクリア
+                }}
+              >
+                アカウント削除
+              </button>
+            </div>
           </div>
         );
-      default:
+
+      // スタッフ用タブコンテンツ
+      case 'comment-management':
+        return (
+          <div className="comment-management-container" style={{ padding: '0 1rem 2rem' }}>
+            <div className="sub-tabs" style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid #ddd', marginBottom: '1rem', paddingBottom: '0.5rem' }}>
+              <button
+                type="button"
+                className={`tab-toggle-button ${commentTab === 'unread' ? 'active' : ''}`}
+                onClick={() => setCommentTab('unread')}
+              >
+                未読
+              </button>
+              <button
+                type="button"
+                className={`tab-toggle-button ${commentTab === 'read' ? 'active' : ''}`}
+                onClick={() => setCommentTab('read')}
+              >
+                既読
+              </button>
+              <button
+                type="button"
+                className={`tab-toggle-button ${commentTab === 'resolved' ? 'active' : ''}`}
+                onClick={() => setCommentTab('resolved')}
+              >
+                対応済み
+              </button>
+            </div>
+
+            {filteredReports.length === 0 ? (
+              <p style={{ color: '#666', padding: '1rem' }}>該当する通知はありません。</p>
+            ) : (
+              <ul className="report-list" style={{ listStyle: 'none', padding: 0 }}>
+                {filteredReports.map(report => {
+                  const work = works.find(w => w.id === report.workId);
+                  return (
+                    <li key={report.id} style={{
+                      display: 'flex', alignItems: 'flex-start', gap: '1rem',
+                      padding: '1rem', borderBottom: '1px solid #eee',
+                      backgroundColor: '#f9f9f9', marginBottom: '0.5rem', borderRadius: '4px'
+                    }}>
+                      {commentTab !== 'resolved' && (
+                        <input
+                          type="checkbox"
+                          checked={selectedReportIds.includes(report.id)}
+                          onChange={() => toggleReportSelection(report.id)}
+                          style={{ marginTop: '5px' }}
+                        />
+                      )}
+                      <div style={{ flex: 1, textAlign: 'left' }}>
+                        <div style={{ marginBottom: '0.5rem', fontSize: '0.9rem', color: '#555' }}>
+                          <span style={{ marginRight: '1rem' }}>{report.date}</span>
+                          {/* Work Title Link */}
+                          <Link
+                            to={`/work/${report.workId}`}
+                            onClick={() => markReportAsRead(report.id)}
+                            style={{ textDecoration: 'underline', color: '#007bff' }}
+                          >
+                            {work ? work.title : '不明な作品'}
+                          </Link>
+                        </div>
+                        <div style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>
+                          {report.commentText}
+                        </div>
+                        <div style={{ fontSize: '0.8rem', color: '#888' }}>
+                          通報ID: {report.id} | 通報者: {report.reporterId || 'ゲスト'}
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+
+            {/* Bulk Delete Button */}
+            {commentTab !== 'resolved' && (
+              <div style={{ marginTop: '1.5rem', textAlign: 'left' }}>
+                <button
+                  onClick={handleBulkDelete}
+                  disabled={selectedReportIds.length === 0}
+                  style={{
+                    padding: '0.8rem 1.5rem',
+                    backgroundColor: selectedReportIds.length > 0 ? '#e74c3c' : '#ccc',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: selectedReportIds.length > 0 ? 'pointer' : 'not-allowed',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  選択したコメントを削除
+                </button>
+              </div>
+            )}
+          </div>
+        );
+      case 'inquiry-handling':
+        return <div style={{ padding: '2rem', textAlign: 'center', color: '#666' }}>お問い合わせ対応（開発中）</div>;
+      case 'tenants':
+        return <div style={{ padding: '2rem', textAlign: 'center', color: '#666' }}>テナント（開発中）</div>;
+
         return null;
     }
-  }, [activeTab, works, users, name, bio, sns, skills, updateProfile, email, currentPassword, newPassword, confirmPassword]);
+  }, [activeTab, works, users, name, bio, sns, skills, updateProfile, email, currentPassword, newPassword, confirmPassword, commentTab, selectedReportIds, reports]);
 
   // ログインしていない場合はマイページを表示しない（またはログインを促す）
   if (!isLoggedIn) {
@@ -264,32 +453,98 @@ const MyPage: React.FC = () => {
           id="mypage-profile-icon"
           className="mypage-profile-icon"
         />
-        <h2 id="mypage-title">{profile.name}のマイページ</h2>
+        <h2 id="mypage-title">{isStaff ? '管理ページ' : `${profile.name}のマイページ`}</h2>
       </div>
 
       <div className="mypage-tabs"> {/* */}
-        {(['uploaded', 'liked', 'following', 'followers', 'profile-edit', 'account-management'] as MyPageTab[]).map(tab => (
-          <button
-            key={tab}
-            className={`tab-button ${activeTab === tab ? 'active' : ''}`}
-            data-tab={tab}
-            onClick={() => setActiveTab(tab)}
-          >
-            {/* 簡易的なタブ名 */}
-            {tab === 'uploaded' && 'アップロード作品'}
-            {tab === 'liked' && 'いいねした作品'}
-            {tab === 'following' && 'フォロー'}
-            {tab === 'followers' && 'フォロワー'}
-            {tab === 'profile-edit' && 'プロフィール編集'}
-            {tab === 'account-management' && 'アカウント管理'}
-          </button>
-        ))}
+        {!isStaff ? (
+          (['uploaded', 'liked', 'following', 'followers', 'profile-edit', 'account-management'] as MyPageTab[]).map(tab => (
+            <button
+              key={tab}
+              className={`tab-button ${activeTab === tab ? 'active' : ''}`}
+              data-tab={tab}
+              onClick={() => setActiveTab(tab)}
+            >
+              {/* 簡易的なタブ名 */}
+              {tab === 'uploaded' && 'アップロード作品'}
+              {tab === 'liked' && 'いいねした作品'}
+              {tab === 'following' && 'フォロー'}
+              {tab === 'followers' && 'フォロワー'}
+              {tab === 'profile-edit' && 'プロフィール編集'}
+              {tab === 'account-management' && 'アカウント管理'}
+            </button>
+          ))
+        ) : (
+          (['account-management', 'comment-management', 'inquiry-handling', 'tenants'] as StaffTab[]).map(tab => (
+            <button
+              key={tab}
+              className={`tab-button ${activeTab === tab ? 'active' : ''}`}
+              data-tab={tab}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab === 'account-management' && 'アカウント管理'}
+              {tab === 'comment-management' && 'コメント管理'}
+              {tab === 'inquiry-handling' && 'お問い合わせ対応'}
+              {tab === 'tenants' && 'テナント'}
+            </button>
+          ))
+        )}
       </div>
 
       {/* script.jsのタブコンテンツ表示ロジック */}
       <div className="tab-content active" id={`${activeTab}-content`}>
         {renderedContent}
       </div>
+      {/* アカウント削除モーダル */}
+      {isDeleteModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <span className="close-button" onClick={() => setIsDeleteModalOpen(false)}>&times;</span>
+            <h3 style={{ marginBottom: '1.5rem' }}>アカウント削除</h3>
+            <p style={{ marginBottom: '1.5rem' }}>
+              アカウントを削除するには、<br />
+              メールアドレスとパスワードを入力してください。
+            </p>
+            <form onSubmit={handleDeleteAccount} className="account-form" style={{ marginBottom: 0 }}>
+              {deleteError && (
+                <div className="error-message">
+                  <i className="fas fa-exclamation-circle" style={{ marginRight: '5px' }}></i>
+                  {deleteError}
+                </div>
+              )}
+              <div className="form-group">
+                <label htmlFor="delete-email" style={{ textAlign: 'left' }}>メールアドレス</label>
+                <input
+                  type="email"
+                  id="delete-email"
+                  value={deleteEmail}
+                  onChange={(e) => setDeleteEmail(e.target.value)}
+                  placeholder={MOCK_ACCOUNT_EMAIL}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="delete-password" style={{ textAlign: 'left' }}>パスワード</label>
+                <input
+                  type="password"
+                  id="delete-password"
+                  value={deletePassword}
+                  onChange={(e) => setDeletePassword(e.target.value)}
+                  placeholder="password"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="delete-account-button" // クラスを追加
+                style={{ width: '100%', marginTop: 0 }} // 微調整
+              >
+                アカウントを削除する
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

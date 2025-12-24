@@ -348,6 +348,33 @@ export const initialUsers: Creator[] = [
     skills: ['CLIP STUDIO PAINT', 'イラスト', 'キャラクターデザイン'],
     joinDate: '2024/07/10',
     awards: ['デジタルアート展 入選'],
-    jobStatus: 'accepting'
+  }
+];
+
+export const initialReports: import('../types').Report[] = [
+  {
+    id: 'r1',
+    workId: 1,
+    commentId: 'c1',
+    commentText: '素晴らしい色彩ですね！感動しました！',
+    reporterId: 'user-b',
+    status: 'unread',
+    date: '2025/10/02'
+  },
+  {
+    id: 'r2',
+    workId: 3,
+    commentId: 'c5',
+    commentText: '楽しいゲームですね！',
+    status: 'read',
+    date: '2025/10/03'
+  },
+  {
+    id: 'r3',
+    workId: 1,
+    commentId: 'c3',
+    commentText: '参考にさせていただきます！',
+    status: 'resolved',
+    date: '2025/10/01'
   }
 ];

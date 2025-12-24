@@ -18,6 +18,7 @@ import MembersPage from './pages/MembersPage';
 import HelpPage from './pages/HelpPage';
 import EditWorkListPage from './pages/EditWorkListPage';
 import EditWorkPage from './pages/EditWorkPage';
+import LoginPage from './pages/LoginPage';
 
 const App: React.FC = () => {
   return (
@@ -27,6 +28,7 @@ const App: React.FC = () => {
         <Routes>
           {/* script.jsのハッシュルーティングをpathベースに置き換え */}
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/find-works" element={<SearchPage />} />
           <Route path="/upload" element={<UploadPage />} />
           <Route path="/about" element={<AboutPage />} />

@@ -1710,6 +1710,35 @@ img {
     margin-top: 1rem;
 }
 
+.account-form button[type="button"].delete-account-button {
+    background-color: #e74c3c;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.account-form button[type="button"].delete-account-button:hover {
+    background-color: #c0392b;
+}
+
+.error-message {
+    color: #e74c3c;
+    background-color: #fceceb;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-align: left;
+    border: 1px solid #e74c3c;
+}
+
 
 /* お仕事依頼セクション */
 .job-request-section {
@@ -2739,6 +2768,43 @@ img {
 .report-button:hover {
     background-color: #e91e63;
     color: #fff;
+}
+
+.delete-button {
+    margin-left: 10px;
+    font-size: 0.8rem;
+    color: #fff;
+    background-color: #e74c3c;
+    border: 1px solid #e74c3c;
+    border-radius: 4px;
+    padding: 2px 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+}
+
+.tab-toggle-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    color: #888;
+    transition: all 0.2s;
+}
+
+.tab-toggle-button.active {
+    font-weight: bold;
+    color: #333;
+    border-bottom: 2px solid #333;
+}
+
+.tab-toggle-button:hover {
+    color: #555;
 }
 
 .modal-overlay {

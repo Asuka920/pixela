@@ -67,3 +67,13 @@ export interface Creator extends UserProfile {
   follower: boolean;
   works: number[]; // 作品IDの配列
 }
+
+export interface Report {
+  id: string;
+  workId: number;
+  commentId: string;
+  commentText: string;
+  reporterId?: string; // 任意
+  status: 'unread' | 'read' | 'resolved';
+  date: string;
+}

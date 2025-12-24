@@ -2,18 +2,18 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useData } from '../contexts/DataContext';
-// import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import VideoPlayer from '../components/VideoPlayer';
-import GameEmbed from '../components/GameEmbed';
 import ZineViewer from '../components/ZineViewer';
 
 const WorkDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { getWorkById, toggleLike, addComment, getCreatorById } = useData();
-  // const { isLoggedIn } = useAuth();
+  const { getWorkById, toggleLike, addComment, getCreatorById, deleteComment, handleReportComment } = useData();
+  const { userType } = useAuth();
   const [commentText, setCommentText] = useState('');
-  const [showReportModal, setShowReportModal] = useState(false);
-  const [reportingCommentId, setReportingCommentId] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedCommentId, setSelectedCommentId] = useState<string | null>(null);
+  const [targetComment, setTargetComment] = useState<any>(null); // To pass full comment to handleReportComment
 
   // URLパラメータは文字列なので数値に変換
   const work = getWorkById(Number(id));
@@ -38,20 +38,32 @@ const WorkDetail: React.FC = () => {
     }
   };
 
-  const openReportModal = (commentId: string) => {
-    setReportingCommentId(commentId);
-    setShowReportModal(true);
+  const isStaff = userType === 'staff';
+
+  const openActionModal = (comment: any) => {
+    setSelectedCommentId(comment.id);
+    setTargetComment(comment);
+    setShowModal(true);
   };
 
-  const closeReportModal = () => {
-    setShowReportModal(false);
-    setReportingCommentId(null);
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedCommentId(null);
+    setTargetComment(null);
   };
 
-  const confirmReport = () => {
-    if (reportingCommentId) {
-      alert(`コメント (ID: ${reportingCommentId}) を通報しました。`);
-      closeReportModal();
+  const confirmAction = () => {
+    if (selectedCommentId) {
+      if (isStaff) {
+        deleteComment(work.id, selectedCommentId);
+        alert('コメントを削除しました。');
+      } else {
+        // Pass the full comment object for reporting
+        if (targetComment) {
+          handleReportComment(work.id, targetComment);
+        }
+      }
+      closeModal();
     }
   };
 
@@ -259,10 +271,10 @@ const WorkDetail: React.FC = () => {
                         <strong>{c.userName}</strong>
                         <span>{c.date}</span>
                         <button
-                          className="report-button"
-                          onClick={() => openReportModal(c.id)}
+                          className={isStaff ? "delete-button" : "report-button"}
+                          onClick={() => openActionModal(c)}
                         >
-                          通報
+                          {isStaff ? '削除' : '通報'}
                         </button>
                       </div>
                       <p className="comment-text">{c.text}</p>
@@ -279,13 +291,17 @@ const WorkDetail: React.FC = () => {
       </div>
 
       {/* Confirmation Modal */}
-      {showReportModal && (
+      {showModal && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <p className="modal-text">このコメントを通報しますか？</p>
+            <p className="modal-text">
+              {isStaff ? 'このコメントを削除しますか？' : 'このコメントを通報しますか？'}
+            </p>
             <div className="modal-actions">
-              <button className="modal-button confirm" onClick={confirmReport}>はい</button>
-              <button className="modal-button cancel" onClick={closeReportModal}>いいえ</button>
+              <button className={`modal-button confirm ${isStaff ? 'delete' : ''}`} onClick={confirmAction}>
+                {isStaff ? 'はい' : 'はい'}
+              </button>
+              <button className="modal-button cancel" onClick={closeModal}>いいえ</button>
             </div>
           </div>
         </div>
