@@ -5,12 +5,21 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const AuthLinks: React.FC = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, userType } = useAuth();
+  const isStaff = userType === 'staff';
+
   if (!isLoggedIn) return null;
+
   return (
     <>
-      <li><Link to="/upload">作品投稿</Link></li>
-      <li><Link to="/mypage">マイページ</Link></li>
+      {!isStaff && (
+        <>
+          <li><Link to="/upload">作品投稿</Link></li>
+          <li><Link to="/edit-works">作品編集</Link></li>
+        </>
+      )}
+      <li><Link to="/tenants">テナント</Link></li>
+      <li><Link to="/mypage">{isStaff ? '管理ページ' : 'マイページ'}</Link></li>
     </>
   );
 };

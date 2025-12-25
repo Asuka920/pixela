@@ -47,6 +47,7 @@ const Header: React.FC = () => {
             <li><Link to="/about" onClick={closeMenu}>事業所紹介</Link></li>
             <li><Link to="/find-works" onClick={closeMenu}>作品一覧</Link></li>
             <li><Link to="/members" onClick={closeMenu}>メンバー一覧</Link></li>
+            {isLoggedIn && <li><Link to="/tenants" onClick={closeMenu}>テナント</Link></li>}
             {isLoggedIn && !isStaff && (
               <>
                 <li><Link to="/upload" onClick={closeMenu}>作品投稿</Link></li>

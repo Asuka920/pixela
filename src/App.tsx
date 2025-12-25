@@ -19,6 +19,9 @@ import HelpPage from './pages/HelpPage';
 import EditWorkListPage from './pages/EditWorkListPage';
 import EditWorkPage from './pages/EditWorkPage';
 import LoginPage from './pages/LoginPage';
+import ReplyPage from './pages/ReplyPage';
+import TenantsPage from './pages/TenantsPage';
+import TenantDetailPage from './pages/TenantDetailPage';
 
 const App: React.FC = () => {
   return (
@@ -41,6 +44,9 @@ const App: React.FC = () => {
           <Route path="/edit-works" element={<EditWorkListPage />} />
           <Route path="/work/edit/:id" element={<EditWorkPage />} />
           <Route path="/profile/:userId" element={<CreatorProfile />} />
+          <Route path="/admin/inquiry/:id" element={<ReplyPage />} />
+          <Route path="/tenants" element={<TenantsPage />} />
+          <Route path="/tenant/:id" element={<TenantDetailPage />} />
 
           {/* 元の #home に相当 */}
           <Route path="/home" element={<Home />} />

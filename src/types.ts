@@ -77,3 +77,24 @@ export interface Report {
   status: 'unread' | 'read' | 'resolved';
   date: string;
 }
+
+export interface Inquiry {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  category: string;
+  message: string;
+  status: 'unread' | 'read' | 'resolved';
+  date: string;
+}
+
+export interface Tenant {
+  id: string;
+  name: string;
+  description: string; // 簡易紹介
+  detailDescription: string; // 詳細紹介（タブ内）
+  iconUrl: string;
+  memberIds: string[]; // 所属メンバーID
+  pickupWorkIds: number[]; // ピックアップ作品ID
+}

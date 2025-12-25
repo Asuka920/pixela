@@ -378,3 +378,56 @@ export const initialReports: import('../types').Report[] = [
     date: '2025/10/01'
   }
 ];
+
+export const initialInquiries: import('../types').Inquiry[] = [
+  {
+    id: 'i1',
+    name: '山田 太郎',
+    email: 'yamada@example.com',
+    phone: '090-1234-5678',
+    category: 'job',
+    message: 'イラスト制作の依頼についてご相談したいです。予算は5万円程度を考えています。',
+    status: 'unread',
+    date: '2025/10/05'
+  },
+  {
+    id: 'i2',
+    name: '鈴木 花子',
+    email: 'suzuki@example.com',
+    category: 'other',
+    message: 'Pixelaの使い方がわかりません。作品のアップロード方法を教えてください。',
+    status: 'read',
+    date: '2025/10/04'
+  },
+  {
+    id: 'i3',
+    name: '田中 次郎',
+    email: 'tanaka@example.com',
+    phone: '080-9876-5432',
+    category: 'job',
+    message: '動画制作の件で先日ご連絡しました田中です。返信をお待ちしております。',
+    status: 'resolved',
+    date: '2025/10/01'
+  }
+];
+
+export const initialTenants: import('../types').Tenant[] = [
+  {
+    id: 't1',
+    name: 'ノマドLaB',
+    description: 'ノマドLaBのテナントです',
+    detailDescription: 'ここはノマドLaBの詳細な紹介文です。クリエイティブな活動を通じて、メンバーのスキルアップと就労支援を行っています。多様な才能が集まる場所、それがノマドLaBです。',
+    iconUrl: '/images/topfancy-last-names-956x1030.png', // 適当な画像
+    memberIds: ['user-a', 'user-b', 'user-c', 'user-g'], // 適当に選出
+    pickupWorkIds: [1, 2, 7] // 適当に選出
+  },
+  {
+    id: 't2',
+    name: '第2制作チーム',
+    description: '第2制作チームのテナントです。',
+    detailDescription: '第2制作チームは、主にWeb制作とデザインに特化したチームです。',
+    iconUrl: '/images/istockphoto-1289906195-612x612.jpg',
+    memberIds: ['user-d'],
+    pickupWorkIds: [4]
+  }
+];

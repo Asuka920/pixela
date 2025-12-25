@@ -1,7 +1,7 @@
 // src/contexts/DataContext.tsx
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { initialWorks, initialUsers, initialReports } from '../data/mockData';
-import { Work, Creator, Report, Comment } from '../types';//'type'
+import { initialWorks, initialUsers, initialReports, initialInquiries, initialTenants } from '../data/mockData';
+import { Work, Creator, Report, Comment, Inquiry, Tenant } from '../types';//'type'
 import { useAuth } from './AuthContext';
 
 interface DataContextType {
@@ -21,6 +21,13 @@ interface DataContextType {
   deleteComment: (workId: number, commentId: string) => void;
   markReportAsRead: (reportId: string) => void;
   deleteSelectedComments: (reportIds: string[]) => void;
+  inquiries: Inquiry[];
+  getInquiryById: (id: string) => Inquiry | undefined;
+  markInquiryAsRead: (id: string) => void;
+  deleteSelectedInquiries: (ids: string[]) => void;
+  sendReply: (inquiryId: string, replyData: any) => void;
+  tenants: Tenant[];
+  getTenantById: (id: string) => Tenant | undefined;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -42,12 +49,16 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [works, setWorks] = useState<Work[]>(initialWorks);
   const [users, setUsers] = useState<Creator[]>(initialUsers);
   const [reports, setReports] = useState<Report[]>(initialReports);
+  const [inquiries, setInquiries] = useState<Inquiry[]>(initialInquiries);
+  const [tenants, setTenants] = useState<Tenant[]>(initialTenants);
 
   const getWorkById = (id: number) => works.find(w => w.id === id);
 
   const getWorksByAuthorId = (authorId: string) => works.filter(w => w.authorId === authorId);
 
   const getCreatorById = (userId: string) => users.find(u => u.id === userId);
+
+  const getTenantById = (id: string) => tenants.find(t => t.id === id);
 
   const toggleLike = (workId: number) => {
     setWorks(prevWorks =>
@@ -167,6 +178,30 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     alert('選択したコメントを削除しました。');
   };
 
+  // お問い合わせ管理機能
+  const getInquiryById = (id: string) => inquiries.find(i => i.id === id);
+
+  const markInquiryAsRead = (id: string) => {
+    setInquiries(prev =>
+      prev.map(i =>
+        i.id === id && i.status === 'unread' ? { ...i, status: 'read' } : i
+      )
+    );
+  };
+
+  const deleteSelectedInquiries = (ids: string[]) => {
+    setInquiries(prev => prev.filter(i => !ids.includes(i.id)));
+    alert('選択したお問い合わせを削除しました。');
+  };
+
+  const sendReply = (inquiryId: string, replyData: any) => {
+    // モック送信
+    setInquiries(prev =>
+      prev.map(i => i.id === inquiryId ? { ...i, status: 'resolved' } : i)
+    );
+    // alert('返信を送信しました。（ダミー）');
+  };
+
   const value = {
     works,
     users,
@@ -183,7 +218,14 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     handleReportComment,
     deleteComment,
     markReportAsRead,
-    deleteSelectedComments
+    deleteSelectedComments,
+    inquiries,
+    getInquiryById,
+    markInquiryAsRead,
+    deleteSelectedInquiries,
+    sendReply,
+    tenants,
+    getTenantById
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
