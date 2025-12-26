@@ -68,7 +68,7 @@ const Header: React.FC = () => {
           )}
           {isLoggedIn && (
             <Link to="/mypage" id="profile-link">
-              <i className="fas fa-user-circle"></i> {isStaff ? '管理ページ' : 'プロフィール'}
+              <i className="fas fa-user-circle"></i> {isStaff ? '管理ページ' : 'マイページ'}
             </Link>
           )}
         </div>

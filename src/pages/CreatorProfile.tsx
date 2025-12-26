@@ -115,12 +115,14 @@ const CreatorProfile: React.FC = () => {
                 </a>
               ))}
             </div>
-            <button
-              className={`follow-button ${user.following ? 'following' : ''}`}
-              onClick={handleFollowClick}
-            >
-              {user.following ? 'フォロー中' : 'フォロー'}
-            </button>
+            {isLoggedIn && (
+              <button
+                className={`follow-button ${user.following ? 'following' : ''}`}
+                onClick={handleFollowClick}
+              >
+                {user.following ? 'フォロー中' : 'フォロー'}
+              </button>
+            )}
           </div>
         </div>
         <h3>作品一覧</h3>
