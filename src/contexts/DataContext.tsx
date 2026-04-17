@@ -50,7 +50,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [users, setUsers] = useState<Creator[]>(initialUsers);
   const [reports, setReports] = useState<Report[]>(initialReports);
   const [inquiries, setInquiries] = useState<Inquiry[]>(initialInquiries);
-  const [tenants, setTenants] = useState<Tenant[]>(initialTenants);
+  const [tenants] = useState<Tenant[]>(initialTenants);
 
   const getWorkById = (id: number) => works.find(w => w.id === id);
 
@@ -194,7 +194,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     alert('選択したお問い合わせを削除しました。');
   };
 
-  const sendReply = (inquiryId: string, replyData: any) => {
+  const sendReply = (inquiryId: string, _replyData: any) => {
     // モック送信
     setInquiries(prev =>
       prev.map(i => i.id === inquiryId ? { ...i, status: 'resolved' } : i)

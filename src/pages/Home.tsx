@@ -1,12 +1,10 @@
 // src/pages/Home.tsx
 import React, { useState, useMemo } from 'react';
 import { useData } from '../contexts/DataContext';
-import { useAuth } from '../contexts/AuthContext';
+
+import { Link } from 'react-router-dom';
 import Slideshow from '../components/Slideshow';
-import HeroSection from '../components/HeroSection';
-import HeroImageSection from '../components/HeroImageSection';
-import WhatsSection from '../components/WhatsSection';
-import FeaturesSection from '../components/FeaturesSection';
+
 import WorkGrid from '../components/WorkGrid';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { Work } from '../types';
@@ -15,10 +13,10 @@ const LOAD_STEP = 3; //
 
 const Home: React.FC = () => {
   const { works } = useData();
-  const { isLoggedIn } = useAuth();
 
-  // script.jsのdisplayCounts
-  const [counts, setCounts] = useState({ personalized: LOAD_STEP, new: LOAD_STEP });
+
+  // 表示数管理
+  const [counts, setCounts] = useState({ works: LOAD_STEP, personal: LOAD_STEP });
 
   // script.jsのpopularWorks
   const popularWorks = useMemo(() =>
@@ -34,11 +32,7 @@ const Home: React.FC = () => {
     [works]
   );
 
-  // script.jsのpersonalizedWorksAll
-  const personalizedWorksAll = useMemo(() =>
-    isLoggedIn ? works.filter(w => w.liked) : works,
-    [works, isLoggedIn]
-  );
+
 
   // script.jsのnewWorksAll
   const newWorksAll = useMemo(() =>
@@ -46,7 +40,17 @@ const Home: React.FC = () => {
     [works]
   );
 
-  const loadMore = (type: 'personalized' | 'new') => {
+  const worksFiltered = useMemo(() => 
+    newWorksAll.filter(w => w.workType === 'Works'),
+    [newWorksAll]
+  );
+
+  const personalFiltered = useMemo(() => 
+    newWorksAll.filter(w => w.workType === '個人制作'),
+    [newWorksAll]
+  );
+
+  const loadMore = (type: keyof typeof counts) => {
     setCounts(prev => ({
       ...prev,
       [type]: prev[type] + LOAD_STEP
@@ -58,48 +62,56 @@ const Home: React.FC = () => {
   // CSSクラス .active-page を適用
   return (
     <section id="home" className="page-section active-page">
-      <HeroSection />
-      <HeroImageSection />
-      <WhatsSection />
-      <FeaturesSection />
-      <section className="popular-works-slideshow"> {/* */}
-        <h2>今人気の作品</h2>
-        {works.length ? <Slideshow works={popularWorks} /> : <LoadingSpinner />}
+
+      <section className="hero-section">
+        <div className="hero-slideshow-container">
+          {works.length ? <Slideshow works={popularWorks} /> : <LoadingSpinner />}
+        </div>
+        <div className="hero-text-container">
+          <div className="hero-text-content">
+            <div className="hero-text-lines">
+              <p className="hero-text">
+                Pixelaは、ノマドLaBが運営するポートフォリオサイトです。
+              </p>
+            </div>
+            <Link to="/find-works" className="hero-works-button">作品一覧へ</Link>
+          </div>
+        </div>
       </section>
 
-      <section className="works-feed personalized-works"> {/* */}
-        <h2>あなたへのおすすめ</h2>
+      <section className="works-feed new-works"> {/* */}
+        <h2>WORKS</h2>
         {works.length ? (
-          <WorkGrid works={getVisibleWorks(personalizedWorksAll, counts.personalized)} />
+          <WorkGrid works={getVisibleWorks(worksFiltered, counts.works)} />
         ) : (
           <LoadingSpinner />
         )}
         <div className="load-more-container">
-          {counts.personalized < personalizedWorksAll.length && (
+          {counts.works < worksFiltered.length && (
             <button
               className="load-more-button"
-              onClick={() => loadMore('personalized')}
+              onClick={() => loadMore('works')}
             >
-              もっと見る
+              read more
             </button>
           )}
         </div>
       </section>
 
-      <section className="works-feed new-works"> {/* */}
-        <h2>新着作品</h2>
+      <section className="works-feed personal-works">
+        <h2>個人制作</h2>
         {works.length ? (
-          <WorkGrid works={getVisibleWorks(newWorksAll, counts.new)} />
+          <WorkGrid works={getVisibleWorks(personalFiltered, counts.personal)} />
         ) : (
           <LoadingSpinner />
         )}
         <div className="load-more-container">
-          {counts.new < newWorksAll.length && (
+          {counts.personal < personalFiltered.length && (
             <button
               className="load-more-button"
-              onClick={() => loadMore('new')}
+              onClick={() => loadMore('personal')}
             >
-              もっと見る
+              read more
             </button>
           )}
         </div>

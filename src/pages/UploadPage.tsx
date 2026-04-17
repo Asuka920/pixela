@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 const UploadPage: React.FC = () => {
   const { isLoggedIn } = useAuth();
   const [contentType, setContentType] = React.useState('image');
+  const [workType, setWorkType] = React.useState('Works');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,6 +20,18 @@ const UploadPage: React.FC = () => {
       {isLoggedIn ? (
         <div id="upload-form-container">
           <form id="work-upload-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="work-type">作品タイプ</label>
+              <select
+                id="work-type"
+                value={workType}
+                onChange={(e) => setWorkType(e.target.value)}
+              >
+                <option value="Works">Works</option>
+                <option value="個人制作">個人制作</option>
+              </select>
+            </div>
+            
             <div className="form-group">
               <label htmlFor="content-type">コンテンツの種類</label>
               <select

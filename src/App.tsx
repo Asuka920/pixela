@@ -11,7 +11,7 @@ import CreatorProfile from './pages/CreatorProfile';
 import SearchPage from './pages/SearchPage';
 import UploadPage from './pages/UploadPage';
 import MyPage from './pages/MyPage';
-import AboutPage from './pages/AboutPage';
+
 import ContactPage from './pages/ContactPage';
 import SignupPage from './pages/SignupPage';
 import MembersPage from './pages/MembersPage';
@@ -34,7 +34,7 @@ const App: React.FC = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/find-works" element={<SearchPage />} />
           <Route path="/upload" element={<UploadPage />} />
-          <Route path="/about" element={<AboutPage />} />
+
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/help" element={<HelpPage />} />
           <Route path="/signup" element={<SignupPage />} />

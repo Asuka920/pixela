@@ -28,6 +28,7 @@ const Header: React.FC = () => {
   const isStaff = userType === 'staff';
 
   return (
+    <>
     <header className="header"> {/* */}
       <div className="header-inner">
         <div
@@ -41,24 +42,6 @@ const Header: React.FC = () => {
         <h1 className="site-logo">
           <Link to="/" onClick={closeMenu}>Pixela</Link>
         </h1>
-        <nav className={`nav-menu ${isMenuOpen ? 'active' : ''}`}> {/* */}
-          <ul>
-            <li><Link to="/" onClick={closeMenu}>ホーム</Link></li>
-            <li><Link to="/about" onClick={closeMenu}>事業所紹介</Link></li>
-            <li><Link to="/find-works" onClick={closeMenu}>作品一覧</Link></li>
-            <li><Link to="/members" onClick={closeMenu}>メンバー一覧</Link></li>
-            {isLoggedIn && <li><Link to="/tenants" onClick={closeMenu}>テナント</Link></li>}
-            {isLoggedIn && !isStaff && (
-              <>
-                <li><Link to="/upload" onClick={closeMenu}>作品投稿</Link></li>
-                <li><Link to="/edit-works" onClick={closeMenu}>作品編集</Link></li>
-              </>
-            )}
-            {isLoggedIn && (
-              <li><Link to="/mypage" onClick={closeMenu}>{isStaff ? '管理ページ' : 'マイページ'}</Link></li>
-            )}
-          </ul>
-        </nav>
         <div className="user-auth-links"> {/* */}
           <a href="#" id="login-button" onClick={handleAuthClick}>
             {isLoggedIn ? 'ログアウト' : 'ログイン'}
@@ -75,6 +58,25 @@ const Header: React.FC = () => {
 
       </div>
     </header>
+    <nav className={`nav-menu ${isMenuOpen ? 'active' : ''}`}> {/* */}
+      <ul>
+        <li><Link to="/" onClick={closeMenu}>ホーム</Link></li>
+
+        <li><Link to="/find-works" onClick={closeMenu}>作品一覧</Link></li>
+        <li><Link to="/members" onClick={closeMenu}>メンバー一覧</Link></li>
+        {isLoggedIn && <li><Link to="/tenants" onClick={closeMenu}>テナント</Link></li>}
+        {isLoggedIn && !isStaff && (
+          <>
+            <li><Link to="/upload" onClick={closeMenu}>作品投稿</Link></li>
+            <li><Link to="/edit-works" onClick={closeMenu}>作品編集</Link></li>
+          </>
+        )}
+        {isLoggedIn && (
+          <li><Link to="/mypage" onClick={closeMenu}>{isStaff ? '管理ページ' : 'マイページ'}</Link></li>
+        )}
+      </ul>
+    </nav>
+  </>
   );
 };
 

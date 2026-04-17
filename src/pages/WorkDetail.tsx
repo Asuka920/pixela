@@ -179,6 +179,7 @@ const WorkDetail: React.FC = () => {
             </Link>
           </div>
           <div className="tags">
+            {work.workType && <span className="tag works-type-tag">{work.workType}</span>}
             {work.tags.map(tag => <span key={tag} className="tag">{tag}</span>)}
           </div>
         </div>

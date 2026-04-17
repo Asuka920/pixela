@@ -12,6 +12,10 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="footer">
+      <div className="footer-wave-container">
+        <div className="footer-wave footer-wave-w1"></div>
+        <div className="footer-wave footer-wave-w2"></div>
+      </div>
       <div className="footer-content">
         <div className="footer-grid">
           {/* Column 1: Help & Contact */}
@@ -28,7 +32,7 @@ const Footer: React.FC = () => {
             <h3>メニュー</h3>
             <ul>
               <li><Link to="/">ホーム</Link></li>
-              <li><Link to="/about">事業所紹介</Link></li>
+
               <li><Link to="/find-works">作品一覧</Link></li>
               <li><Link to="/members">メンバー一覧</Link></li>
               {isLoggedIn && <li><Link to="/tenants">テナント</Link></li>}

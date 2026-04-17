@@ -14,7 +14,10 @@ export interface Work {
   author: string;
   authorId: string;
 
-  // 作品タイプ
+  // 制作区分 (Works / 個人制作)
+  workType?: 'Works' | '個人制作';
+
+  // コンテンツの種類
   type: 'image' | 'video' | 'product' | 'zine' | 'other';
 
   // タイプ別のURL

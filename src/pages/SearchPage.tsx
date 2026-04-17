@@ -10,6 +10,7 @@ const SearchPage: React.FC = () => {
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
   const [workType, setWorkType] = useState('all');
+  const [creationType, setCreationType] = useState(''); // 'Works' | '個人制作' | ''
   const [sortOrder, setSortOrder] = useState('newest'); // 'newest', 'recommended', 'likes'
   const [results, setResults] = useState<Work[] | null>(null);
 
@@ -98,6 +99,11 @@ const SearchPage: React.FC = () => {
       foundWorks = foundWorks.filter(work => work.type === workType);
     }
 
+    // 制作区分 (Works / 個人制作) でフィルタリング
+    if (creationType) {
+      foundWorks = foundWorks.filter(work => work.workType === creationType);
+    }
+
     // 並び替え実行
     foundWorks = sortWorks(foundWorks, sortOrder);
 
@@ -147,6 +153,9 @@ const SearchPage: React.FC = () => {
       let foundWorks = searchWorks(keyword, category);
       if (type !== 'all') {
         foundWorks = foundWorks.filter(work => work.type === type);
+      }
+      if (creationType) {
+        foundWorks = foundWorks.filter(work => work.workType === creationType);
       }
       setResults(foundWorks);
       setCurrentPage(1); // Reset to page 1 on filter change
@@ -199,6 +208,18 @@ const SearchPage: React.FC = () => {
               ))}
             </ul>
           )}
+        </div>
+        <div className="search-form-group">
+          <label htmlFor="creation-type-select">作品タイプ</label>
+          <select
+            id="creation-type-select"
+            value={creationType}
+            onChange={(e) => setCreationType(e.target.value)}
+          >
+            <option value="">すべて</option>
+            <option value="Works">Works</option>
+            <option value="個人制作">個人制作</option>
+          </select>
         </div>
         <div className="search-form-group">
           <label htmlFor="category-select">カテゴリ</label>

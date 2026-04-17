@@ -47,10 +47,6 @@ const Slideshow: React.FC<SlideshowProps> = ({ works }) => {
         {works.map((work) => (
           <Link to={`/work/${work.id}`} key={work.id} className="slide"> {/* */}
             <img src={work.imageUrl} alt={work.title} loading="lazy" />
-            <div className="slide-info"> {/* */}
-              <h3>{work.title}</h3>
-              <p>{work.description}</p>
-            </div>
           </Link>
         ))}
       </div>

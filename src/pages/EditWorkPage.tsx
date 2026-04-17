@@ -13,6 +13,7 @@ const EditWorkPage: React.FC = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [contentType, setContentType] = useState('image');
+    const [workType, setWorkType] = useState('Works');
     // URL fields
     const [url, setUrl] = useState(''); // Generic for product/video/other/pdf
     const [tags, setTags] = useState('');
@@ -20,7 +21,7 @@ const EditWorkPage: React.FC = () => {
     // Images
     const [existingImages, setExistingImages] = useState<string[]>([]);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [newFiles, setNewFiles] = useState<File[]>([]); // mock usage
+    const [, setNewFiles] = useState<File[]>([]); // mock usage
 
     // 制作情報
     const [productionDate, setProductionDate] = useState('');
@@ -41,6 +42,7 @@ const EditWorkPage: React.FC = () => {
                 setTitle(work.title);
                 setDescription(work.description);
                 setContentType(work.type);
+                setWorkType(work.workType || 'Works');
 
                 // URLのマッピング
                 let currentUrl = '';
@@ -94,6 +96,7 @@ const EditWorkPage: React.FC = () => {
                     title,
                     description,
                     type: contentType as any, // 簡易的にキャスト
+                    workType: workType as any,
                     tags: tags.split(',').map(t => t.trim()).filter(t => t !== ''),
                     imageUrls: existingImages, // Update images
                     createdDate: productionDate,
@@ -132,6 +135,18 @@ const EditWorkPage: React.FC = () => {
             <h2>作品編集</h2>
             <div id="upload-form-container">
                 <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="work-type">作品タイプ</label>
+                        <select
+                            id="work-type"
+                            value={workType}
+                            onChange={(e) => setWorkType(e.target.value)}
+                        >
+                            <option value="Works">Works</option>
+                            <option value="個人制作">個人制作</option>
+                        </select>
+                    </div>
+
                     <div className="form-group">
                         <label htmlFor="content-type">コンテンツの種類</label>
                         <select

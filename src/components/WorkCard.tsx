@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useData } from '../contexts/DataContext';
-import { Work } from '../types';//'type'
+import { Work } from '../types';
 
 interface WorkCardProps {
   work: Work;
@@ -10,33 +10,40 @@ interface WorkCardProps {
 }
 
 const WorkCard: React.FC<WorkCardProps> = ({ work, isEditable = false }) => {
-  const { toggleLike, getWorkById, deleteWork } = useData();
+  const { getWorkById, deleteWork } = useData();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   // Get the latest work state from context to ensure likes are reactive
   const currentWork = getWorkById(work.id) || work;
 
-  // カード内のボタンクリックでページ遷移しないように
-  const handleLikeClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    toggleLike(work.id);
-  };
+  // Format date to YYYY.MM.DD
+  const rawDate = currentWork.uploadedDate || currentWork.createdDate || '2026-01-01';
+  const formattedDate = rawDate.replace(/-/g, '.');
+
+  // Extract first tag for category
+  const categoryName = currentWork.tags && currentWork.tags.length > 0 ? currentWork.tags[0] : currentWork.type;
 
   return (
-    <div className="work-card">
-      <Link to={`/work/${currentWork.id}`}>
-        <img src={currentWork.imageUrls[0]} alt={currentWork.title} loading="lazy" />
-        <div className="work-info">
+    <div className={isEditable ? "work-card" : "work-thumbnail-wrapper"}>
+      <Link to={`/work/${currentWork.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <div className="work-image-square">
+          <img src={currentWork.imageUrls[0]} alt={currentWork.title} loading="lazy" />
+        </div>
+        <div className={isEditable ? "work-info" : "work-thumbnail-info"}>
+          {!isEditable && (
+            <>
+              <div className="work-date">{formattedDate}</div>
+              <div className="work-category">#{categoryName}</div>
+            </>
+          )}
           <h3>{currentWork.title}</h3>
+          
+          {/* Editable specifics inside info if needed, but currently just title is fine */}
         </div>
       </Link>
-      <div className="work-meta">
-        <Link to={`/profile/${currentWork.authorId}`} className="author-link">
-          <i className="fas fa-user-circle"></i>
-          <span>{currentWork.author}</span>
-        </Link>
-        {isEditable ? (
+      
+      {isEditable && (
+        <div className="work-meta">
           <div className="work-actions">
             <Link to={`/work/edit/${currentWork.id}`} className="edit-button">
               編集
@@ -45,17 +52,8 @@ const WorkCard: React.FC<WorkCardProps> = ({ work, isEditable = false }) => {
               削除
             </button>
           </div>
-        ) : (
-          <button
-            className="like-button"
-            onClick={handleLikeClick}
-            aria-label={currentWork.liked ? 'いいねを取り消す' : 'いいねする'}
-          >
-            <i className={`${currentWork.liked ? 'fas' : 'far'} fa-heart`}></i>
-            <span>{currentWork.likes}</span>
-          </button>
-        )}
-      </div>
+        </div>
+      )}
 
       {showDeleteModal && (
         <div className="modal-overlay" onClick={() => setShowDeleteModal(false)}>
