@@ -1,7 +1,6 @@
 // src/components/Slideshow.tsx
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
 
 interface SlideshowWork {
   id: number;
@@ -28,11 +27,6 @@ const Slideshow: React.FC<SlideshowProps> = ({ works }) => {
     return () => clearInterval(interval); // クリーンアップ
   }, [works.length]);
 
-  // CSS transform を計算
-  const transformStyle = useMemo(() => ({
-    transform: `translateX(-${currentIndex * 100}%)` //
-  }), [currentIndex]);
-
   if (!works.length) {
     return <div>読み込み中...</div>;
   }
@@ -42,10 +36,13 @@ const Slideshow: React.FC<SlideshowProps> = ({ works }) => {
       <div
         className="slideshow-wrapper"
         id="popular-slideshow-wrapper"
-        style={transformStyle}
       > {/* */}
-        {works.map((work) => (
-          <Link to={`/work/${work.id}`} key={work.id} className="slide"> {/* */}
+        {works.map((work, index) => (
+          <Link 
+            to={`/work/${work.id}`} 
+            key={work.id} 
+            className={`slide ${index === currentIndex ? 'active' : ''}`}
+          > {/* */}
             <img src={work.imageUrl} alt={work.title} loading="lazy" />
           </Link>
         ))}

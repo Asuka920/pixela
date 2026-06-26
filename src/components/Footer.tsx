@@ -12,10 +12,6 @@ const Footer: React.FC = () => {
 
   return (
     <footer className="footer">
-      <div className="footer-wave-container">
-        <div className="footer-wave footer-wave-w1"></div>
-        <div className="footer-wave footer-wave-w2"></div>
-      </div>
       <div className="footer-content">
         <div className="footer-grid">
           {/* Column 1: Help & Contact */}
@@ -31,11 +27,11 @@ const Footer: React.FC = () => {
           <div className="footer-col">
             <h3>メニュー</h3>
             <ul>
-              <li><Link to="/">ホーム</Link></li>
+              <li><Link to="/">HOME</Link></li>
 
-              <li><Link to="/find-works">作品一覧</Link></li>
-              <li><Link to="/members">メンバー一覧</Link></li>
-              {isLoggedIn && <li><Link to="/tenants">テナント</Link></li>}
+              <li><Link to="/find-works">WORKS</Link></li>
+              <li><Link to="/members">MEMBERS</Link></li>
+              {isLoggedIn && <li><Link to="/tenants">GROUP</Link></li>}
             </ul>
           </div>
 
@@ -46,19 +42,19 @@ const Footer: React.FC = () => {
               <ul>
                 {!isStaff && (
                   <>
-                    <li><Link to="/upload">作品投稿</Link></li>
-                    <li><Link to="/edit-works">作品編集</Link></li>
+                    <li><Link to="/upload">POST</Link></li>
+                    <li><Link to="/edit-works">EDIT</Link></li>
                   </>
                 )}
-                <li><Link to="/mypage">{isStaff ? '管理ページ' : 'マイページ'}</Link></li>
+                <li><Link to="/mypage">{isStaff ? '管理ページ' : 'MY PAGE'}</Link></li>
               </ul>
             </div>
           )}
         </div>
         <div className="footer-bottom">
-          <p>&copy; 2025 Pixela. All rights reserved.</p>
+          <p>&copy; 2026 Pixela. All rights reserved.</p>
           <div className="social-links">
-            <a href="#"><i className="fab fa-twitter"></i></a>
+            <a href="#"><i className="fa-brands fa-x-twitter"></i></a>
             <a href="#"><i className="fab fa-instagram"></i></a>
           </div>
         </div>

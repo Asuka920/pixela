@@ -1,11 +1,10 @@
 // src/components/Header.tsx
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const Header: React.FC = () => {
   const { isLoggedIn, userType, logout } = useAuth();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   // ログインページへ遷移するかログアウトするか
@@ -19,30 +18,16 @@ const Header: React.FC = () => {
     }
   };
 
-  const closeMenu = () => setIsMenuOpen(false);
-
-  // script.jsのHamburgerMenuManagerロジック
-  const toggleMenu = () => setIsMenuOpen(prev => !prev);
-
   // スタッフかどうか
   const isStaff = userType === 'staff';
 
   return (
-    <>
-    <header className="header"> {/* */}
+    <header className="header">
       <div className="header-inner">
-        <div
-          className={`hamburger-menu ${isMenuOpen ? 'active' : ''}`}
-          onClick={toggleMenu}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
         <h1 className="site-logo">
-          <Link to="/" onClick={closeMenu}>Pixela</Link>
+          <Link to="/">Pixela</Link>
         </h1>
-        <div className="user-auth-links"> {/* */}
+        <div className="user-auth-links">
           <a href="#" id="login-button" onClick={handleAuthClick}>
             {isLoggedIn ? 'ログアウト' : 'ログイン'}
           </a>
@@ -55,28 +40,8 @@ const Header: React.FC = () => {
             </Link>
           )}
         </div>
-
       </div>
     </header>
-    <nav className={`nav-menu ${isMenuOpen ? 'active' : ''}`}> {/* */}
-      <ul>
-        <li><Link to="/" onClick={closeMenu}>ホーム</Link></li>
-
-        <li><Link to="/find-works" onClick={closeMenu}>作品一覧</Link></li>
-        <li><Link to="/members" onClick={closeMenu}>メンバー一覧</Link></li>
-        {isLoggedIn && <li><Link to="/tenants" onClick={closeMenu}>テナント</Link></li>}
-        {isLoggedIn && !isStaff && (
-          <>
-            <li><Link to="/upload" onClick={closeMenu}>作品投稿</Link></li>
-            <li><Link to="/edit-works" onClick={closeMenu}>作品編集</Link></li>
-          </>
-        )}
-        {isLoggedIn && (
-          <li><Link to="/mypage" onClick={closeMenu}>{isStaff ? '管理ページ' : 'マイページ'}</Link></li>
-        )}
-      </ul>
-    </nav>
-  </>
   );
 };
 

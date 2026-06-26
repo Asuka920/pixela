@@ -334,7 +334,10 @@ const JobRequestSection: React.FC<{ authorId: string }> = ({ authorId }) => {
     <div className="job-request-section">
       <h3>お仕事依頼</h3>
       <div className="job-request-content">
-        <p>このクリエイターにお仕事を依頼しますか？</p>
+        <p className="job-request-text">
+          <span className="mobile-break-block">このクリエイターに</span>
+          <span className="mobile-break-block">お仕事を依頼しますか？</span>
+        </p>
         <div className="job-status-display">
           <span>現在のステータス: </span>
           {getStatusBadge(author.jobStatus)}

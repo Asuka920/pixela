@@ -25,22 +25,30 @@ const WorkCard: React.FC<WorkCardProps> = ({ work, isEditable = false }) => {
 
   return (
     <div className={isEditable ? "work-card" : "work-thumbnail-wrapper"}>
-      <Link to={`/work/${currentWork.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+      <Link to={`/work/${currentWork.id}`} className="work-image-link" style={{ textDecoration: 'none', color: 'inherit' }}>
         <div className="work-image-square">
           <img src={currentWork.imageUrls[0]} alt={currentWork.title} loading="lazy" />
         </div>
-        <div className={isEditable ? "work-info" : "work-thumbnail-info"}>
-          {!isEditable && (
-            <>
-              <div className="work-date">{formattedDate}</div>
-              <div className="work-category">#{categoryName}</div>
-            </>
-          )}
-          <h3>{currentWork.title}</h3>
-          
-          {/* Editable specifics inside info if needed, but currently just title is fine */}
-        </div>
       </Link>
+      <div className={isEditable ? "work-info" : "work-thumbnail-info"}>
+        {!isEditable && (
+          <>
+            <div className="work-date">{formattedDate}</div>
+            <div className="work-category">
+              <Link to={`/find-works?category=${encodeURIComponent(categoryName)}`} className="category-link">
+                #{categoryName}
+              </Link>
+            </div>
+          </>
+        )}
+        <h3>
+          <Link to={`/work/${currentWork.id}`} className="work-title-link">
+            {currentWork.title}
+          </Link>
+        </h3>
+        
+        {/* Editable specifics inside info if needed, but currently just title is fine */}
+      </div>
       
       {isEditable && (
         <div className="work-meta">

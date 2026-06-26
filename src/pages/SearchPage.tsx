@@ -1,5 +1,6 @@
 // src/pages/SearchPage.tsx
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useData } from '../contexts/DataContext';
 import WorkGrid from '../components/WorkGrid';
 import WorkTypeFilter from '../components/WorkTypeFilter';
@@ -13,10 +14,42 @@ const SearchPage: React.FC = () => {
   const [creationType, setCreationType] = useState(''); // 'Works' | '個人制作' | ''
   const [sortOrder, setSortOrder] = useState('newest'); // 'newest', 'recommended', 'likes'
   const [results, setResults] = useState<Work[] | null>(null);
+  const location = useLocation();
 
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 36;
+
+  // URLパラメータを監視して初期検索を実行
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const catParam = params.get('category') || '';
+    const keywordParam = params.get('keyword') || '';
+
+    setKeyword(keywordParam);
+    setCategory(catParam);
+
+    let foundWorks = searchWorks(keywordParam, catParam);
+    
+    if (workType !== 'all') {
+      foundWorks = foundWorks.filter(work => work.type === workType);
+    }
+    if (creationType) {
+      foundWorks = foundWorks.filter(work => work.workType === creationType);
+    }
+    
+    const sorted = [...foundWorks];
+    if (sortOrder === 'newest') {
+      sorted.sort((a, b) => new Date(b.createdDate || '').getTime() - new Date(a.createdDate || '').getTime());
+    } else if (sortOrder === 'recommended') {
+      sorted.sort((a, b) => b.id - a.id);
+    } else if (sortOrder === 'likes') {
+      sorted.sort((a, b) => b.likes - a.likes);
+    }
+
+    setResults(sorted);
+    setCurrentPage(1);
+  }, [location.search, searchWorks]);
 
   // 機能追加: 検索サジェスト・履歴用State
   const [showSuggestions, setShowSuggestions] = useState(false);
