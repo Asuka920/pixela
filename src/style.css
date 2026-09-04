@@ -1832,9 +1832,12 @@ img {
 }
 
 .skill-tag {
-    display: inline-block;
-    background-color: #e0e7ee;
-    color: #6a8ba4;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    background-color: #e0f2f1;
+    color: #00695c;
     font-size: 0.85rem;
     padding: 6px 12px;
     border-radius: 15px;
@@ -2039,17 +2042,15 @@ img {
 
 
 
-.member-skills {
+.member-card .member-skills {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
     margin-top: 5px;
 }
 
-.skill-tag {
+.member-card .skill-tag {
     font-size: 0.75rem;
-    background-color: #e0f2f1;
-    color: #00695c;
     padding: 2px 6px;
     border-radius: 4px;
 }
@@ -3353,4 +3354,375 @@ img {
     cursor: pointer;
     accent-color: #ff6347;
     /* Checkbox color */
+}
+
+/* =====================================================
+   下書き保存機能 (Draft Feature)
+   ===================================================== */
+
+/* --- タブナビゲーション --- */
+.draft-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.draft-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+.draft-tab-btn:hover {
+    color: #ff6347;
+}
+
+.draft-tab-btn--active {
+    color: #ff6347;
+    border-bottom-color: #ff6347;
+    font-weight: 700;
+}
+
+.draft-tab-btn__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    background: #e0e0e0;
+    color: #555;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    transition: background 0.2s, color 0.2s;
+}
+
+.draft-tab-btn--active .draft-tab-btn__count {
+    background: #ff6347;
+    color: #fff;
+}
+
+.draft-tab-btn__count--accent {
+    background: #ff6347 !important;
+    color: #fff !important;
+}
+
+/* --- 下書きカードグリッド --- */
+.draft-list {
+    min-height: 200px;
+}
+
+.draft-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.draft-card {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.draft-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.draft-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.draft-card__label {
+    display: inline-block;
+    padding: 3px 10px;
+    background: #fff3f0;
+    color: #ff6347;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+}
+
+.draft-card__date {
+    font-size: 0.78rem;
+    color: #aaa;
+}
+
+.draft-card__title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #222;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.draft-card__description {
+    font-size: 0.85rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+    flex: 1;
+}
+
+.draft-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.draft-card__tag {
+    display: inline-block;
+    padding: 3px 10px;
+    background: #f5f5f5;
+    color: #555;
+    border-radius: 999px;
+    font-size: 0.78rem;
+}
+
+.draft-card__actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.draft-card__resume-btn {
+    flex: 1;
+    padding: 9px 0;
+    background: linear-gradient(135deg, #ff6347, #ff8c69);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+}
+
+.draft-card__resume-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.draft-card__delete-btn {
+    padding: 9px 16px;
+    background: #fff;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.draft-card__delete-btn:hover {
+    background: #e74c3c;
+    color: #fff;
+}
+
+/* --- 空状態 --- */
+.draft-list__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    color: #888;
+    gap: 12px;
+}
+
+.draft-list__empty-icon {
+    font-size: 3.5rem;
+    line-height: 1;
+    margin-bottom: 8px;
+    opacity: 0.6;
+}
+
+.draft-list__upload-link {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 10px 24px;
+    background: #ff6347;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: opacity 0.2s;
+}
+
+.draft-list__upload-link:hover {
+    opacity: 0.85;
+}
+
+/* --- 下書き保存ボタン --- */
+.draft-form-actions {
+    display: flex;
+    gap: 14px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+
+.draft-save-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 22px;
+    background: #fff;
+    color: #ff6347;
+    border: 2px solid #ff6347;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+
+.draft-save-button:hover {
+    background: #ff6347;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.draft-save-button__icon {
+    font-size: 1rem;
+}
+
+.submit-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 11px 28px;
+    background: linear-gradient(135deg, #ff6347, #ff8c69);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+}
+
+.submit-button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* --- 下書き編集中バッジ --- */
+.draft-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    background: #fff8f0;
+    border: 1.5px solid #ffb347;
+    border-radius: 8px;
+    color: #d4700a;
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    animation: draft-badge-pulse 2.5s ease-in-out infinite;
+}
+
+.draft-badge__icon {
+    font-size: 1.1rem;
+}
+
+@keyframes draft-badge-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 179, 71, 0.4); }
+    50%       { box-shadow: 0 0 0 6px rgba(255, 179, 71, 0); }
+}
+
+/* --- トースト通知 --- */
+.draft-toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.16);
+    animation: toast-slide-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+}
+
+.draft-toast--success {
+    background: #1a7a4a;
+    color: #fff;
+}
+
+.draft-toast--error {
+    background: #c0392b;
+    color: #fff;
+}
+
+.draft-toast__icon {
+    font-size: 1.1rem;
+    font-weight: 900;
+}
+
+@keyframes toast-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- レスポンシブ --- */
+@media (max-width: 600px) {
+    .draft-tabs {
+        gap: 0;
+    }
+    .draft-tab-btn {
+        padding: 10px 14px;
+        font-size: 0.88rem;
+    }
+    .draft-card-grid {
+        grid-template-columns: 1fr;
+    }
+    .draft-form-actions {
+        flex-direction: column;
+    }
+    .draft-save-button,
+    .submit-button {
+        width: 100%;
+        justify-content: center;
+    }
+    .draft-toast {
+        bottom: 16px;
+        right: 16px;
+        left: 16px;
+        justify-content: center;
+    }
 }

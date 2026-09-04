@@ -36,8 +36,6 @@ const CreatorProfile: React.FC = () => {
     { key: 'facebook', icon: 'fab fa-facebook', url: user.sns.facebook },
   ];
 
-  // 作品統計
-  const totalLikes = userWorks.reduce((sum, work) => sum + work.likes, 0);
 
   return (
     <section id="creator-profile" className="page-section active-page creator-profile-section">
@@ -100,11 +98,6 @@ const CreatorProfile: React.FC = () => {
                 <i className="fas fa-image"></i>
                 <span className="stat-number">{userWorks.length}</span>
                 <span className="stat-label">作品数</span>
-              </div>
-              <div className="stat-item">
-                <i className="fas fa-heart"></i>
-                <span className="stat-number">{totalLikes}</span>
-                <span className="stat-label">総いいね数</span>
               </div>
             </div>
 

@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useData } from '../contexts/DataContext';
+import { useDrafts } from '../hooks/useDrafts';
 
 const EditWorkPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, profile } = useAuth();
     const { getWorkById, updateWork, deleteWork } = useData();
+    const { saveDraft } = useDrafts(profile?.id);
+
+    // 下書きトースト
+    const [draftToast, setDraftToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+    const [currentDraftId, setCurrentDraftId] = useState<string | undefined>(undefined);
 
     // 編集用ステート (UploadPageと同じ項目 + idなど)
     const [title, setTitle] = useState('');
@@ -84,6 +90,39 @@ const EditWorkPage: React.FC = () => {
         }
     };
 
+    const showToast = useCallback((message: string, type: 'success' | 'error') => {
+        setDraftToast({ message, type });
+        setTimeout(() => setDraftToast(null), 3000);
+    }, []);
+
+    const handleSaveDraft = () => {
+        if (!id) return;
+        const workId = parseInt(id, 10);
+        try {
+            const saved = saveDraft({
+                draftId: currentDraftId,
+                workId,
+                title,
+                description,
+                type: contentType as any,
+                workType: workType as any,
+                tags: tags.split(',').map((t) => t.trim()).filter(Boolean),
+                imageUrls: existingImages,
+                createdDate: productionDate,
+                tools: tools.split(',').map((t) => t.trim()).filter(Boolean),
+                duration,
+                videoUrl: contentType === 'video' ? url : undefined,
+                productUrl: contentType === 'product' ? url : undefined,
+                pdfUrl: contentType === 'zine' ? url : undefined,
+                otherUrl: contentType === 'other' ? url : undefined,
+            });
+            setCurrentDraftId(saved.draftId);
+            showToast('下書きを保存しました', 'success');
+        } catch {
+            showToast('下書きの保存に失敗しました', 'error');
+        }
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (id) {
@@ -133,6 +172,15 @@ const EditWorkPage: React.FC = () => {
     return (
         <section className="page-section active-page upload-section">
             <h2>作品編集</h2>
+
+            {/* トースト通知 */}
+            {draftToast && (
+                <div className={`draft-toast draft-toast--${draftToast.type}`}>
+                    <span className="draft-toast__icon">{draftToast.type === 'success' ? '✓' : '✕'}</span>
+                    {draftToast.message}
+                </div>
+            )}
+
             <div id="upload-form-container">
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
@@ -303,8 +351,17 @@ const EditWorkPage: React.FC = () => {
                         />
                     </div>
 
-                    <div className="work-actions" style={{ marginTop: '20px', justifyContent: 'flex-start' }}>
+                    <div className="work-actions" style={{ marginTop: '20px', justifyContent: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
                         <button type="submit" className="edit-button">更新する</button>
+                        <button
+                            type="button"
+                            id="save-draft-edit-btn"
+                            className="draft-save-button"
+                            onClick={handleSaveDraft}
+                        >
+                            <span className="draft-save-button__icon">💾</span>
+                            下書き保存
+                        </button>
                         <button type="button" className="delete-button" onClick={handleDeleteClick}>削除する</button>
                     </div>
                 </form>

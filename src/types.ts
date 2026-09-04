@@ -101,3 +101,28 @@ export interface Tenant {
   memberIds: string[]; // 所属メンバーID
   pickupWorkIds: number[]; // ピックアップ作品ID
 }
+
+// 下書き保存用の型
+export interface DraftWork {
+  draftId: string;      // 下書き固有ID
+  savedAt: string;      // 保存日時 (ISO 8601)
+  authorId: string;     // 下書き所有者のユーザーID
+
+  // 既存作品の編集下書きの場合は workId を持つ
+  workId?: number;
+
+  // Work の全フィールドをオプショナルに
+  title?: string;
+  description?: string;
+  type?: 'image' | 'video' | 'product' | 'zine' | 'other';
+  workType?: 'Works' | '個人制作';
+  imageUrls?: string[];
+  videoUrl?: string;
+  productUrl?: string;
+  otherUrl?: string;
+  pdfUrl?: string;
+  tags?: string[];
+  createdDate?: string;
+  tools?: string[];
+  duration?: string;
+}
